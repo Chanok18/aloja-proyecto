@@ -1,0 +1,9 @@
+//# Al empezar tu sesión:
+git pull
+
+# Trabajas en tu código...
+
+# Al terminar:
+git add .
+git commit -m "Tu mensaje"
+git push
