@@ -5,24 +5,22 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+    <!-- Correo -->
+    <div>
+        <x-input-label for="correo" :value="__('Correo')" />
+        <x-text-input id="correo" class="block mt-1 w-full" type="email" name="correo" :value="old('correo')" required autofocus autocomplete="username" />
+        <x-input-error :messages="$errors->get('correo')" class="mt-2" />
+    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+    <!-- Contraseña -->
+    <div class="mt-4">
+        <x-input-label for="contraseña" :value="__('Contraseña')" />
+        <x-text-input id="contraseña" class="block mt-1 w-full"
+                        type="password"
+                        name="contraseña"
+                        required autocomplete="current-password" />
+        <x-input-error :messages="$errors->get('contraseña')" class="mt-2" />
+    </div>
 
         <!-- Remember Me -->
         <div class="block mt-4">

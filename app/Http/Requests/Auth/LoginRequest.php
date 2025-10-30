@@ -27,8 +27,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'correo' => ['required', 'string', 'email'],
+            'contraseña' => ['required', 'string'],
         ];
     }
 
@@ -41,11 +41,16 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt(['correo' => $this->correo, 'contraseña' => $this->contraseña], $this->boolean('remember'))) {
+    // Intentar autenticar con correo y contraseña
+        if (! Auth::attempt([
+            'correo' => $this->correo, 
+            'password' => $this->contraseña
+        ], $this->boolean('remember'))) {
+        
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'correo' => trans('auth.failed'),
+                'correo' => __('Las credenciales proporcionadas no coinciden con nuestros registros.'),
             ]);
         }
 
@@ -80,6 +85,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('correo')).'|'.$this->ip());
     }
 }
