@@ -46,9 +46,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     })->name('dashboard');
     
     // CRUD Hospedajes (Admin ve TODOS)
-    Route::get('/hospedajes', function () {
-        return view('admin.hospedajes.index');
-    })->name('hospedajes.index');
+    Route::resource('hospedajes', \App\Http\Controllers\Admin\AdminHospedajeController::class);
     
     // CRUD Reservas
     Route::get('/reservas', function () {
