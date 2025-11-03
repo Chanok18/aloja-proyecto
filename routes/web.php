@@ -47,21 +47,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // CRUD Hospedajes (Admin ve TODOS)
     Route::resource('hospedajes', \App\Http\Controllers\Admin\AdminHospedajeController::class);
-    
-    // CRUD Reservas
-    Route::get('/reservas', function () {
-        return view('admin.reservas.index');
-    })->name('reservas.index');
+    // CRUD Reservas - Resource completo
+    Route::resource('reservas', \App\Http\Controllers\Admin\AdminReservaController::class);
     
     // CRUD Pagos
-    Route::get('/pagos', function () {
-        return view('admin.pagos.index');
-    })->name('pagos.index');
+    Route::resource('pagos', \App\Http\Controllers\Admin\AdminPagoController::class);
     
     // CRUD Reseñas
-    Route::get('/resenas', function () {
-        return view('admin.resenas.index');
-    })->name('resenas.index');
+    Route::resource('resenas', \App\Http\Controllers\Admin\AdminResenaController::class);
+
     
     // Gestión de usuarios
     Route::get('/usuarios', function () {
