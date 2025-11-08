@@ -7,9 +7,58 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// ========================================
+// RUTAS PÚBLICAS (Sin autenticación)
+// ========================================
+
+// Búsqueda pública de hospedajes
+Route::get('/hospedajes', [App\Http\Controllers\HospedajePublicoController::class, 'index'])
+    ->name('hospedajes.publico.index');
+
+// Ver detalle público de hospedaje
+Route::get('/hospedajes/{id}', [App\Http\Controllers\HospedajePublicoController::class, 'show'])
+    ->name('hospedajes.publico.show');
 // Rutas de autenticación (Login, Register, etc.)
 require __DIR__.'/auth.php';
 
+// ========================================
+// RUTAS DE RESERVAS (Requieren autenticación)
+// ========================================
+Route::middleware(['auth'])->group(function () {
+    
+    // Crear reserva
+    Route::post('/reservas', [App\Http\Controllers\ReservaController::class, 'store'])
+        ->name('reservas.store');
+    
+    // Ver confirmación
+    Route::get('/reservas/confirmacion/{id}', [App\Http\Controllers\ReservaController::class, 'confirmacion'])
+        ->name('reservas.confirmacion');
+    
+    // Mis reservas
+    Route::get('/mis-reservas', [App\Http\Controllers\ReservaController::class, 'misReservas'])
+        ->name('reservas.mis-reservas');
+    
+    // Cancelar reserva
+    Route::post('/reservas/{id}/cancelar', [App\Http\Controllers\ReservaController::class, 'cancelar'])
+        ->name('reservas.cancelar');
+});
+// ========================================
+// RUTAS DE PAGOS (Requieren autenticación)
+// ========================================
+Route::middleware(['auth'])->group(function () {
+    
+    // Formulario de pago
+    Route::get('/pagos/crear/{reserva}', [App\Http\Controllers\PagoController::class, 'create'])
+        ->name('pagos.create');
+    
+    // Procesar pago
+    Route::post('/pagos', [App\Http\Controllers\PagoController::class, 'store'])
+        ->name('pagos.store');
+    
+    // Confirmación de pago exitoso
+    Route::get('/pagos/exito/{pago}', [App\Http\Controllers\PagoController::class, 'success'])
+        ->name('pagos.success');
+});
 // ========================================
 // RUTAS PARA USUARIOS AUTENTICADOS
 // ========================================

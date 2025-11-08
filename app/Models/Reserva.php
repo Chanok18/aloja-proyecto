@@ -14,7 +14,8 @@ class Reserva extends Model
         'id_hospedaje',
         'fecha_inicio',
         'fecha_fin',
-        'total',
+        'num_huespedes',  // ← NUEVO
+        'total',          // ← Es "total", no "precio_total"
         'estado'
     ];
 

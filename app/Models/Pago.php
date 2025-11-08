@@ -13,10 +13,10 @@ class Pago extends Model
     protected $fillable = [
         'id_reserva',
         'monto',
-        'metodo',
-        'estado_pago',
+        'metodo',              // ← Tu BD usa "metodo"
+        'estado_pago',         // ← Tu BD usa "estado_pago"
         'fecha_pago',
-        'referencia_pago'
+        'referencia_pago'      // ← Tu BD usa "referencia_pago"
     ];
 
     protected $casts = [
