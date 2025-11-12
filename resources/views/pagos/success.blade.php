@@ -116,7 +116,7 @@
                 <a href="{{ route('reservas.mis-reservas') }}" class="btn btn-primary">
                     Ver Mis Reservas
                 </a>
-                <a href="{{ route('hospedajes.publico.index') }}" class="btn btn-secondary">
+                <a href="{{ route('home') }}" class="btn btn-secondary">
                     Buscar Más
                 </a>
             </div>

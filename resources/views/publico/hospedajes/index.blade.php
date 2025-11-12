@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Hospedajes - Aloja</title>
+    <title>Aloja- Tu estadia a un click de distancia</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,7 +47,7 @@
             <div class="header-content">
                 <div class="logo">🏠 Aloja</div>
                 <div class="nav-links">
-                    <a href="{{ route('hospedajes.publico.index') }}">Buscar</a>
+                    <a href="{{ route('home') }}">Buscar</a>
                     @auth
                         <a href="{{ route('dashboard') }}">Mi Panel</a>
                         <form method="POST" action="{{ route('logout') }}" style="display: inline;">
@@ -55,6 +55,7 @@
                             <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Cerrar Sesión</button>
                         </form>
                     @else
+                        <a href="{{ route('register') }}" class="btn btn-secondary" style="margin-right: 10px;">Regístrate</a>
                         <a href="{{ route('login') }}" class="btn btn-primary">Iniciar Sesión</a>
                     @endauth
                 </div>

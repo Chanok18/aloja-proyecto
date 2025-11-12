@@ -17,7 +17,8 @@
         .nav-links a { color: white; text-decoration: none; }
         .btn { padding: 12px 24px; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: 600; }
         .btn-primary { background: #f59e0b; color: white; border: none; cursor: pointer; }
-        .btn-secondary { background: #6b7280; color: white; }
+        .btn-secondary { background: #6b7280; color: white; border: none; }
+        .btn-secondary:hover { background: #4b5563; }
         
         .back-btn { display: inline-block; margin: 20px 0; color: #1e3a8a; text-decoration: none; }
         .hero-image { width: 100%; height: 400px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 120px; margin-bottom: 30px; }
@@ -56,7 +57,7 @@
             <div class="header-content">
                 <div class="logo">🏠 Aloja</div>
                 <div class="nav-links">
-                    <a href="{{ route('hospedajes.publico.index') }}">Buscar</a>
+                    <a href="{{ route('home') }}">Buscar</a>
                     @auth
                         <a href="{{ route('dashboard') }}">Mi Panel</a>
                         <form method="POST" action="{{ route('logout') }}" style="display: inline;">
@@ -64,6 +65,7 @@
                             <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Cerrar Sesión</button>
                         </form>
                     @else
+                        <a href="{{ route('register') }}" class="btn btn-secondary" style="margin-right: 10px;">Regístrate</a>
                         <a href="{{ route('login') }}" class="btn btn-primary">Iniciar Sesión</a>
                     @endauth
                 </div>
@@ -72,7 +74,7 @@
     </div>
 
     <div class="container">
-        <a href="{{ route('hospedajes.publico.index') }}" class="back-btn">← Volver a la búsqueda</a>
+        <a href="{{ route('home') }}" class="back-btn">← Volver a la búsqueda</a>
 
         <!-- Imagen Hero -->
         <div class="hero-image">🏠</div>

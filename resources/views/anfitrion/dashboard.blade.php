@@ -7,7 +7,6 @@
 @section('sidebar-menu')
     <a href="{{ route('anfitrion.dashboard') }}" class="active">📊 Dashboard</a>
     <a href="{{ route('anfitrion.hospedajes.index') }}">🏠 Mis Hospedajes</a>
-    <a href="{{ route('anfitrion.reservas.index') }}">📅 Mis Reservas</a>
 @endsection
 
 @section('content')
@@ -17,7 +16,7 @@
     <div class="stats-grid">
         <div class="stat-card">
             <h3>Mis Hospedajes</h3>
-            <p>0</p>
+            <p>{{ \App\Models\Hospedaje::where('id_anfitrion', Auth::id())->count() }}</p>
         </div>
         <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
             <h3>Reservas Activas</h3>
@@ -39,8 +38,8 @@
     <div style="margin-top: 30px;">
         <h3 style="margin-bottom: 15px;">Acciones Rápidas</h3>
         <div style="display: flex; gap: 10px;">
-            <a href="{{ route('anfitrion.hospedajes.index') }}" class="btn btn-primary">+ Publicar Hospedaje</a>
-            <a href="{{ route('anfitrion.reservas.index') }}" class="btn btn-primary">Ver Reservas</a>
+            <a href="{{ route('anfitrion.hospedajes.create') }}" class="btn btn-primary">+ Publicar Nuevo Hospedaje</a>
+            <a href="{{ route('anfitrion.hospedajes.index') }}" class="btn btn-primary">Ver Mis Hospedajes</a>
         </div>
     </div>
 @endsection

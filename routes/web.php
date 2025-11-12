@@ -3,9 +3,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 // Ruta pública (Home/Landing)
-Route::get('/', function () {
-    return view('welcome');
-});
+// Ruta principal - Landing con búsqueda de hospedajes
+Route::get('/', [App\Http\Controllers\HospedajePublicoController::class, 'index'])
+    ->name('home');
 
 // ========================================
 // RUTAS PÚBLICAS (Sin autenticación)
@@ -122,15 +122,9 @@ Route::middleware(['auth', 'role:anfitrion'])->prefix('anfitrion')->name('anfitr
         return view('anfitrion.dashboard');
     })->name('dashboard');
     
-    // Gestión de SUS hospedajes
-    Route::get('/mis-hospedajes', function () {
-        return view('anfitrion.hospedajes.index');
-    })->name('hospedajes.index');
+    // Gestión de SUS hospedajes (Resource completo)
+    Route::resource('hospedajes', \App\Http\Controllers\Anfitrion\AnfitrionHospedajeController::class);
     
-    // Ver reservas de sus propiedades
-    Route::get('/reservas', function () {
-        return view('anfitrion.reservas.index');
-    })->name('reservas.index');
 });
 
 // ========================================

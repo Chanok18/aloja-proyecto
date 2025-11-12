@@ -49,7 +49,7 @@
             <div class="header-content">
                 <div class="logo">🏠 Aloja</div>
                 <div class="nav-links">
-                    <a href="{{ route('hospedajes.publico.index') }}">Buscar Hospedajes</a>
+                    <a href="{{ route('home') }}">Buscar Hospedajes</a>
                     <a href="{{ route('dashboard') }}">Mi Panel</a>
                     <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                         @csrf
@@ -147,7 +147,7 @@
                 <div class="empty-icon">📭</div>
                 <h2 style="color: #666; margin-bottom: 10px;">No tienes reservas aún</h2>
                 <p style="color: #999; margin-bottom: 30px;">Explora hospedajes y haz tu primera reserva</p>
-                <a href="{{ route('hospedajes.publico.index') }}" class="btn btn-primary">
+                <a href="{{ route('home') }}" class="btn btn-primary">
                     Buscar Hospedajes
                 </a>
             </div>
