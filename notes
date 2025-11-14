@@ -11,3 +11,5 @@ git push
 #para correr:
 php artisan serve (en una terminal)
 npm run dev (en otra terminal)
+
+
