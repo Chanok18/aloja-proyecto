@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AnfitrionHospedajeController extends Controller
 {
-    /**
-     * Mostrar los hospedajes del anfitrión
-     */
     public function index()
     {
         $hospedajes = Hospedaje::where('id_anfitrion', Auth::id())
@@ -28,18 +25,11 @@ class AnfitrionHospedajeController extends Controller
 
         return view('anfitrion.hospedajes.index', compact('hospedajes', 'total', 'activos', 'inactivos'));
     }
-
-    /**
-     * Mostrar formulario para crear nuevo hospedaje
-     */
     public function create()
     {
         return view('anfitrion.hospedajes.create');
     }
 
-    /**
-     * Guardar nuevo hospedaje
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -54,7 +44,7 @@ class AnfitrionHospedajeController extends Controller
             'disponible' => 'boolean',
         ]);
 
-        // Agregar el ID del anfitrión autenticado (CORREGIDO)
+        // Agregar el ID del anfitrión
         $validated['id_anfitrion'] = Auth::id();
         $validated['wifi'] = $request->has('wifi');
         $validated['cocina'] = $request->has('cocina');
@@ -67,9 +57,8 @@ class AnfitrionHospedajeController extends Controller
             ->with('success', '¡Hospedaje publicado exitosamente!');
     }
 
-    /**
-     * Mostrar detalle de un hospedaje del anfitrión
-     */
+    
+     #Mostrar detalle de un hospedaje del anfitrión
     public function show($id)
     {
         $hospedaje = Hospedaje::where('id_hospedaje', $id)
@@ -87,9 +76,9 @@ class AnfitrionHospedajeController extends Controller
         return view('anfitrion.hospedajes.show', compact('hospedaje', 'reservasRecientes'));
     }
 
-    /**
-     * Mostrar formulario para editar hospedaje
-     */
+    
+    #Mostrar formulario para editar hospedaje
+    
     public function edit($id)
     {
         $hospedaje = Hospedaje::where('id_hospedaje', $id)

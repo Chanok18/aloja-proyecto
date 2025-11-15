@@ -14,8 +14,8 @@ class Reserva extends Model
         'id_hospedaje',
         'fecha_inicio',
         'fecha_fin',
-        'num_huespedes',  // ← NUEVO
-        'total',          // ← Es "total", no "precio_total"
+        'num_huespedes',  
+        'total',          
         'estado'
     ];
 
@@ -25,7 +25,7 @@ class Reserva extends Model
         'total' => 'decimal:2'
     ];
 
-    // Relaciones
+    // Relaciones con reserva
     public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'id_usuario', 'id_usuario');
@@ -47,6 +47,7 @@ class Reserva extends Model
     }
 
     // Métodos auxiliares
+    #verificaciones de estado
     public function estaPendiente()
     {
         return $this->estado === 'pendiente';

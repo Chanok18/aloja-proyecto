@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Pago;
@@ -10,9 +9,6 @@ use Carbon\Carbon;
 
 class PagoController extends Controller
 {
-    /**
-     * Mostrar formulario de pago para una reserva
-     */
     public function create($reservaId)
     {
         // Verificar que la reserva existe y pertenece al usuario
@@ -38,9 +34,6 @@ class PagoController extends Controller
         return view('pagos.create', compact('reserva', 'noches'));
     }
 
-    /**
-     * Procesar el pago (simulado)
-     */
     public function store(Request $request)
     {
         // Validar datos
@@ -59,14 +52,14 @@ class PagoController extends Controller
             return back()->with('error', 'Esta reserva ya tiene un pago registrado');
         }
 
-        // Crear el pago (CORREGIDO: usa los nombres de tu BD)
+        // Crear el pago
         $pago = Pago::create([
             'id_reserva' => $reserva->id_reserva,
             'monto' => $reserva->total,
-            'metodo' => $request->metodo_pago,           // ← "metodo"
-            'estado_pago' => 'completado',               // ← "estado_pago"
+            'metodo' => $request->metodo_pago,       
+            'estado_pago' => 'completado',         
             'fecha_pago' => Carbon::now(),
-            'referencia_pago' => $this->generarReferencia(), // ← "referencia_pago"
+            'referencia_pago' => $this->generarReferencia(), 
         ]);
 
         // Actualizar estado de la reserva a "confirmada"
@@ -77,9 +70,6 @@ class PagoController extends Controller
             ->with('success', '¡Pago procesado exitosamente!');
     }
 
-    /**
-     * Mostrar confirmación de pago exitoso
-     */
     public function success($pagoId)
     {
         $pago = Pago::with(['reserva.hospedaje.anfitrion', 'reserva.usuario'])
@@ -93,10 +83,6 @@ class PagoController extends Controller
 
         return view('pagos.success', compact('pago', 'noches'));
     }
-
-    /**
-     * Generar referencia de pago única
-     */
     private function generarReferencia()
     {
         return 'TXN-' . strtoupper(uniqid()) . '-' . rand(1000, 9999);

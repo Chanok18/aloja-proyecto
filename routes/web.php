@@ -2,153 +2,111 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-// Ruta pública (Home/Landing)
-// Ruta principal - Landing con búsqueda de hospedajes
-Route::get('/', [App\Http\Controllers\HospedajePublicoController::class, 'index'])
-    ->name('home');
 
-// ========================================
-// RUTAS PÚBLICAS (Sin autenticación)
-// ========================================
 
-// Búsqueda pública de hospedajes
-Route::get('/hospedajes', [App\Http\Controllers\HospedajePublicoController::class, 'index'])
-    ->name('hospedajes.publico.index');
+#RUTAS PuBLICAS * sin logearse *
 
-// Ver detalle público de hospedaje
-Route::get('/hospedajes/{id}', [App\Http\Controllers\HospedajePublicoController::class, 'show'])
-    ->name('hospedajes.publico.show');
-// Rutas de autenticación (Login, Register, etc.)
+// Pagina principal con busqueda de hospedajes
+Route::get('/', [App\Http\Controllers\HospedajePublicoController::class, 'index'])->name('home');
+Route::get('/hospedajes', [App\Http\Controllers\HospedajePublicoController::class, 'index'])->name('hospedajes.publico.index');
+// Detalle de un hospedaje específico
+Route::get('/hospedajes/{id}', [App\Http\Controllers\HospedajePublicoController::class, 'show'])->name('hospedajes.publico.show');
+
 require __DIR__.'/auth.php';
 
-// ========================================
-// RUTAS DE RESERVAS (Requieren autenticación)
-// ========================================
+
+#RUTAS DE RESERVAS *debe logearse*
 Route::middleware(['auth'])->group(function () {
     
-    // Crear reserva
-    Route::post('/reservas', [App\Http\Controllers\ReservaController::class, 'store'])
-        ->name('reservas.store');
+    //Crear una nueva reserva
+    Route::post('/reservas', [App\Http\Controllers\ReservaController::class, 'store'])->name('reservas.store');
     
-    // Ver confirmación
-    Route::get('/reservas/confirmacion/{id}', [App\Http\Controllers\ReservaController::class, 'confirmacion'])
-        ->name('reservas.confirmacion');
+    //Ver confirmacion de reserva
+    Route::get('/reservas/confirmacion/{id}', [App\Http\Controllers\ReservaController::class, 'confirmacion'])->name('reservas.confirmacion');
     
-    // Mis reservas
-    Route::get('/mis-reservas', [App\Http\Controllers\ReservaController::class, 'misReservas'])
-        ->name('reservas.mis-reservas');
+    //Lista de mis reservas
+    Route::get('/mis-reservas', [App\Http\Controllers\ReservaController::class, 'misReservas'])->name('reservas.mis-reservas');
     
-    // Cancelar reserva
-    Route::post('/reservas/{id}/cancelar', [App\Http\Controllers\ReservaController::class, 'cancelar'])
-        ->name('reservas.cancelar');
+    //Cancelar una reserva
+    Route::post('/reservas/{id}/cancelar', [App\Http\Controllers\ReservaController::class, 'cancelar'])->name('reservas.cancelar');
 });
-// ========================================
-// RUTAS DE PAGOS (Requieren autenticación)
-// ========================================
+
+
+//RUTAS DE PAGOS *dbe logearse*
 Route::middleware(['auth'])->group(function () {
     
     // Formulario de pago
-    Route::get('/pagos/crear/{reserva}', [App\Http\Controllers\PagoController::class, 'create'])
-        ->name('pagos.create');
+    Route::get('/pagos/crear/{reserva}', [App\Http\Controllers\PagoController::class, 'create'])->name('pagos.create');
     
     // Procesar pago
-    Route::post('/pagos', [App\Http\Controllers\PagoController::class, 'store'])
-        ->name('pagos.store');
+    Route::post('/pagos', [App\Http\Controllers\PagoController::class, 'store'])->name('pagos.store');
     
-    // Confirmación de pago exitoso
-    Route::get('/pagos/exito/{pago}', [App\Http\Controllers\PagoController::class, 'success'])
-        ->name('pagos.success');
+    Route::get('/pagos/exito/{pago}', [App\Http\Controllers\PagoController::class, 'success'])->name('pagos.success');
 });
-// ========================================
-// RUTAS PARA USUARIOS AUTENTICADOS
-// ========================================
 
-// Dashboard general (todos los usuarios autenticados)
+
+// DASHBOARD GENERAL (Redirige según rol)
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         $user = Auth::user();
         
-        // Redirigir según el rol
+        // Redirigir automáticamente según el rol
         if ($user->rol === 'admin') {
             return redirect()->route('admin.dashboard');
         } elseif ($user->rol === 'anfitrion') {
             return redirect()->route('anfitrion.dashboard');
         }
-        
         return redirect()->route('viajero.dashboard');
     })->name('dashboard');
     
-    // Perfil de usuario
+    // Rutas de perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// ========================================
-// RUTAS PARA ADMINISTRADOR
-// ========================================
+
+//RUTAS PARA ADMIN
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     
-    // Dashboard Admin
+    // Dashboard del admin
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
     
-    // CRUD Hospedajes (Admin ve TODOS)
+    // CRUD de hospedajes
     Route::resource('hospedajes', \App\Http\Controllers\Admin\AdminHospedajeController::class);
-    // CRUD Reservas - Resource completo
+    
+    // CRUD de reservas
     Route::resource('reservas', \App\Http\Controllers\Admin\AdminReservaController::class);
     
-    // CRUD Pagos
+    //CRUD de pagos
     Route::resource('pagos', \App\Http\Controllers\Admin\AdminPagoController::class);
     
-    // CRUD Reseñas
+    //CRUD de reseñas
     Route::resource('resenas', \App\Http\Controllers\Admin\AdminResenaController::class);
-
-    
-    // Gestión de usuarios
-    Route::get('/usuarios', function () {
-        return view('admin.usuarios.index');
-    })->name('usuarios.index');
 });
 
-// ========================================
-// RUTAS PARA ANFITRIÓN
-// ========================================
+
+//RUTAS PARA ANFITRION
+
 Route::middleware(['auth', 'role:anfitrion'])->prefix('anfitrion')->name('anfitrion.')->group(function () {
     
-    // Dashboard Anfitrión
+    // Dashboard del anfitrión
     Route::get('/dashboard', function () {
         return view('anfitrion.dashboard');
     })->name('dashboard');
     
-    // Gestión de SUS hospedajes (Resource completo)
+    // CRUD de sus propios hospedajes
     Route::resource('hospedajes', \App\Http\Controllers\Anfitrion\AnfitrionHospedajeController::class);
-    
 });
 
-// ========================================
-// RUTAS PARA VIAJERO
-// ========================================
+
+//RUTAS PARA VIAJERO
 Route::middleware(['auth', 'role:viajero'])->prefix('viajero')->name('viajero.')->group(function () {
     
-    // Dashboard Viajero
+    //Dashboard del viajero
     Route::get('/dashboard', function () {
         return view('viajero.dashboard');
     })->name('dashboard');
-    
-    // Buscar hospedajes
-    Route::get('/buscar', function () {
-        return view('viajero.buscar');
-    })->name('buscar');
-    
-    // Mis reservas
-    Route::get('/mis-reservas', function () {
-        return view('viajero.reservas.index');
-    })->name('reservas.index');
-    
-    // Mis favoritos
-    Route::get('/favoritos', function () {
-        return view('viajero.favoritos');
-    })->name('favoritos');
 });

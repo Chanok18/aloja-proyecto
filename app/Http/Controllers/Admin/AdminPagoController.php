@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 
 class AdminPagoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         $pagos = Pago::with('reserva.usuario', 'reserva.hospedaje')
@@ -26,9 +24,6 @@ class AdminPagoController extends Controller
         return view('admin.pagos.index', compact('pagos', 'totalRecaudado', 'pagosCompletados', 'pagosPendientes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         // Solo reservas confirmadas sin pago
@@ -40,9 +35,6 @@ class AdminPagoController extends Controller
         return view('admin.pagos.create', compact('reservas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -59,9 +51,7 @@ class AdminPagoController extends Controller
             ->with('success', 'Pago registrado exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
         $pago = Pago::with(['reserva.usuario', 'reserva.hospedaje'])
@@ -70,9 +60,7 @@ class AdminPagoController extends Controller
         return view('admin.pagos.show', compact('pago'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+ 
     public function edit(string $id)
     {
         $pago = Pago::findOrFail($id);
@@ -82,9 +70,7 @@ class AdminPagoController extends Controller
         return view('admin.pagos.edit', compact('pago', 'reservas'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, string $id)
     {
         $pago = Pago::findOrFail($id);
@@ -103,9 +89,6 @@ class AdminPagoController extends Controller
             ->with('success', 'Pago actualizado exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $pago = Pago::findOrFail($id);

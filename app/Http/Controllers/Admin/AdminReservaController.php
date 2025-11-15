@@ -10,9 +10,7 @@ use Illuminate\Http\Request;
 
 class AdminReservaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $reservas = Reserva::with(['usuario', 'hospedaje'])
@@ -22,9 +20,7 @@ class AdminReservaController extends Controller
         return view('admin.reservas.index', compact('reservas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         $usuarios = Usuario::where('rol', 'viajero')
@@ -36,9 +32,7 @@ class AdminReservaController extends Controller
         return view('admin.reservas.create', compact('usuarios', 'hospedajes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -56,9 +50,7 @@ class AdminReservaController extends Controller
             ->with('success', 'Reserva creada exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
         $reserva = Reserva::with(['usuario', 'hospedaje', 'pago', 'resena'])
@@ -67,9 +59,7 @@ class AdminReservaController extends Controller
         return view('admin.reservas.show', compact('reserva'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
         $reserva = Reserva::findOrFail($id);
@@ -83,9 +73,7 @@ class AdminReservaController extends Controller
         return view('admin.reservas.edit', compact('reserva', 'usuarios', 'hospedajes'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, string $id)
     {
         $reserva = Reserva::findOrFail($id);
@@ -105,9 +93,6 @@ class AdminReservaController extends Controller
             ->with('success', 'Reserva actualizada exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $reserva = Reserva::findOrFail($id);

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -11,9 +10,6 @@ use App\Models\Hospedaje;
 
 class AdminResenaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $resenas = Resena::with(['usuario', 'hospedaje', 'reserva'])
@@ -33,9 +29,7 @@ class AdminResenaController extends Controller
         ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         // Obtener reservas completadas que no tienen reseña
@@ -47,9 +41,7 @@ class AdminResenaController extends Controller
         return view('admin.resenas.create', compact('reservas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -75,9 +67,6 @@ class AdminResenaController extends Controller
             ->with('success', 'Reseña creada exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $resena = Resena::with(['usuario', 'hospedaje', 'reserva'])
@@ -86,9 +75,7 @@ class AdminResenaController extends Controller
         return view('admin.resenas.show', compact('resena'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
         $resena = Resena::with(['reserva', 'usuario', 'hospedaje'])
@@ -100,9 +87,7 @@ class AdminResenaController extends Controller
         return view('admin.resenas.edit', compact('resena', 'reservas'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+ 
     public function update(Request $request, string $id)
     {
         $resena = Resena::findOrFail($id);
@@ -118,9 +103,7 @@ class AdminResenaController extends Controller
             ->with('success', 'Reseña actualizada exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
         $resena = Resena::findOrFail($id);
@@ -130,22 +113,15 @@ class AdminResenaController extends Controller
             ->with('success', 'Reseña eliminada exitosamente.');
     }
 
-    /**
-     * Método adicional para moderar reseñas (activar/desactivar)
-     */
+
     public function toggleVisibility(string $id)
     {
         $resena = Resena::findOrFail($id);
         // Puedes agregar un campo 'estado' en la tabla resenas si necesitas moderación
-        // $resena->update(['estado' => !$resena->estado]);
-
         return redirect()->back()
             ->with('success', 'Visibilidad de la reseña actualizada.');
     }
 
-    /**
-     * Filtrar reseñas por calificación
-     */
     public function filterByRating(Request $request)
     {
         $rating = $request->input('rating');

@@ -10,7 +10,6 @@
     <a href="{{ route('admin.reservas.index') }}" class="active">📅 Reservas</a>
     <a href="{{ route('admin.pagos.index') }}">💳 Pagos</a>
     <a href="{{ route('admin.resenas.index') }}">⭐ Reseñas</a>
-    <a href="{{ route('admin.usuarios.index') }}">👥 Usuarios</a>
 @endsection
 
 @section('content')

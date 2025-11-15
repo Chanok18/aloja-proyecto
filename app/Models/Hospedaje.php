@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Model;
 
 class Hospedaje extends Model
@@ -9,6 +7,7 @@ class Hospedaje extends Model
     protected $table = 'hospedajes';
     protected $primaryKey = 'id_hospedaje';
     
+    #Campos que se pueden asignar masivamente
     protected $fillable = [
         'id_anfitrion',
         'titulo',
@@ -22,21 +21,21 @@ class Hospedaje extends Model
         'cocina',
         'estacionamiento'
     ];
-
     protected $casts = [
+        'precio' => 'decimal:2',
         'disponible' => 'boolean',
         'wifi' => 'boolean',
         'cocina' => 'boolean',
-        'estacionamiento' => 'boolean',
-        'precio' => 'decimal:2'
+        'estacionamiento' => 'boolean'
     ];
 
-    // Relaciones
     public function anfitrion()
     {
         return $this->belongsTo(Usuario::class, 'id_anfitrion', 'id_usuario');
     }
 
+    
+    #Un hospedaje tiene muchas reservas
     public function reservas()
     {
         return $this->hasMany(Reserva::class, 'id_hospedaje', 'id_hospedaje');
@@ -47,19 +46,13 @@ class Hospedaje extends Model
         return $this->hasMany(Resena::class, 'id_hospedaje', 'id_hospedaje');
     }
 
-    // Métodos auxiliares
     public function promedioCalificacion()
     {
-        return $this->resenas()->avg('calificacion');
+        return $this->resenas()->avg('calificacion') ?? 0;
     }
 
     public function totalResenas()
     {
         return $this->resenas()->count();
-    }
-
-    public function getFotosArray()
-    {
-        return json_decode($this->fotos, true) ?? [];
     }
 }

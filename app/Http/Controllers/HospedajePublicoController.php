@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class HospedajePublicoController extends Controller
 {
-    /**
-     * Mostrar búsqueda de hospedajes (pública, sin login)
-     */
+    
     public function index(Request $request)
     {
         $query = Hospedaje::with('anfitrion')
@@ -46,15 +44,11 @@ class HospedajePublicoController extends Controller
         return view('publico.hospedajes.index', compact('hospedajes'));
     }
 
-    /**
-     * Mostrar detalle de un hospedaje (público)
-     */
     public function show($id)
     {
         $hospedaje = Hospedaje::with(['anfitrion', 'resenas.usuario'])
             ->where('disponible', true)
             ->findOrFail($id);
-
         return view('publico.hospedajes.show', compact('hospedaje'));
     }
 }
