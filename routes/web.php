@@ -87,9 +87,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('resenas', \App\Http\Controllers\Admin\AdminResenaController::class);
 });
 
-
 //RUTAS PARA ANFITRION
-
 Route::middleware(['auth', 'role:anfitrion'])->prefix('anfitrion')->name('anfitrion.')->group(function () {
     
     // Dashboard del anfitrión
@@ -99,6 +97,14 @@ Route::middleware(['auth', 'role:anfitrion'])->prefix('anfitrion')->name('anfitr
     
     // CRUD de sus propios hospedajes
     Route::resource('hospedajes', \App\Http\Controllers\Anfitrion\AnfitrionHospedajeController::class);
+
+    // Ver reservas de sus hospedajes
+    Route::get('/reservas', [\App\Http\Controllers\Anfitrion\AnfitrionReservaController::class, 'index'])
+        ->name('reservas.index');
+    
+    // Ver detalle de una reserva
+    Route::get('/reservas/{id}', [\App\Http\Controllers\Anfitrion\AnfitrionReservaController::class, 'show'])
+        ->name('reservas.show');
 });
 
 

@@ -301,7 +301,7 @@
         </div>
     </section>
 
-    //BUSCADOR
+    
     <div class="container">
         <div class="search-card">
             <h2 class="search-title">Encuentra tu hospedaje perfecto</h2>
@@ -360,7 +360,7 @@
         </div>
     </div>
 
-    //HOSPEDAJES
+    
     <section class="hospedajes-section">
         <div class="container">
             <div class="text-center mb-5">

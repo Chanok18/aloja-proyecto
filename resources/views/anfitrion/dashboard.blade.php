@@ -7,6 +7,7 @@
 @section('sidebar-menu')
     <a href="{{ route('anfitrion.dashboard') }}" class="active">📊 Dashboard</a>
     <a href="{{ route('anfitrion.hospedajes.index') }}">🏠 Mis Hospedajes</a>
+    <a href="{{ route('anfitrion.reservas.index') }}">📅 Reservas</a>
 @endsection
 
 @section('content')
@@ -39,7 +40,7 @@
         <h3 style="margin-bottom: 15px;">Acciones Rápidas</h3>
         <div style="display: flex; gap: 10px;">
             <a href="{{ route('anfitrion.hospedajes.create') }}" class="btn btn-primary">+ Publicar Nuevo Hospedaje</a>
-            <a href="{{ route('anfitrion.hospedajes.index') }}" class="btn btn-primary">Ver Mis Hospedajes</a>
+            <a href="{{ route('anfitrion.reservas.index') }}" class="btn btn-primary">📅 Ver Todas las Reservas</a>
         </div>
     </div>
 @endsection
