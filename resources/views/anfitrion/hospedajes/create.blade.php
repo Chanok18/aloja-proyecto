@@ -32,6 +32,16 @@
         
         .form-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
         
+        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
+        .photo-upload { border: 2px dashed #d1d5db; border-radius: 8px; padding: 30px 20px; text-align: center; background: #f9fafb; transition: all 0.3s; cursor: pointer; }
+        .photo-upload:hover { border-color: #1e3a8a; background: #eff6ff; }
+        .photo-upload input[type="file"] { display: none; }
+        .photo-upload-label { cursor: pointer; display: block; }
+        .photo-icon { font-size: 48px; margin-bottom: 10px; }
+        .photo-text { font-weight: 600; color: #1e3a8a; margin-bottom: 5px; }
+        .photo-hint { font-size: 13px; color: #666; }
+        .photo-primary { border-color: #1e3a8a; background: #eff6ff; }
+        
         .checkbox-group { display: flex; flex-direction: column; gap: 15px; }
         .checkbox-item { display: flex; align-items: center; padding: 15px; background: #f9fafb; border-radius: 8px; border: 2px solid #e5e7eb; cursor: pointer; transition: all 0.3s; }
         .checkbox-item:hover { background: #f3f4f6; border-color: #1e3a8a; }
@@ -47,9 +57,12 @@
         .form-actions { display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px; }
         
         .alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        .alert-error { background: #fee2e2; color: #991b1b; }
+        .alert-error { background: #fee2e2; color: #991b1b; border-left: 4px solid #dc2626; }
         
         .error-text { color: #ef4444; font-size: 14px; margin-top: 5px; }
+        
+        .info-box { background: #fef3c7; padding: 15px; border-radius: 8px; border-left: 4px solid #f59e0b; margin-top: 20px; }
+        .info-box strong { color: #92400e; }
     </style>
 </head>
 <body>
@@ -78,9 +91,21 @@
             <div class="breadcrumb">Dashboard / Mis Hospedajes / Publicar Nuevo</div>
         </div>
 
+        <!-- Mensajes de Error -->
+        @if ($errors->any())
+            <div class="alert alert-error">
+                <strong>¡Ups! Hay algunos errores:</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <!-- Formulario -->
         <div class="form-card">
-            <form action="{{ route('anfitrion.hospedajes.store') }}" method="POST">
+            <form action="{{ route('anfitrion.hospedajes.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Información Básica -->
@@ -90,7 +115,7 @@
                     <div class="form-group">
                         <label for="titulo">Título del Hospedaje *</label>
                         <input type="text" id="titulo" name="titulo" value="{{ old('titulo') }}" 
-                               placeholder="Ej: Departamento Moderno en Miraflores" required>
+                               placeholder="Ej: Departamento Moderno en Miraflores" required maxlength="150">
                         <small>Un título atractivo ayuda a que tu hospedaje destaque</small>
                         @error('titulo')
                             <span class="error-text">{{ $message }}</span>
@@ -110,7 +135,7 @@
                     <div class="form-group">
                         <label for="ubicacion">Ubicación *</label>
                         <input type="text" id="ubicacion" name="ubicacion" value="{{ old('ubicacion') }}" 
-                               placeholder="Ej: Miraflores, Lima" required>
+                               placeholder="Ej: Miraflores, Lima" required maxlength="150">
                         <small>Distrito y ciudad</small>
                         @error('ubicacion')
                             <span class="error-text">{{ $message }}</span>
@@ -143,7 +168,54 @@
                     </div>
                 </div>
 
-                <!-- Amenidades -->
+                #FOTOs
+                <div class="form-section">
+                    <h2>📸 Fotos del Hospedaje (Máximo 3)</h2>
+                    <p style="color: #666; margin-bottom: 10px;">Las primeras impresiones son importantes. Sube fotos atractivas de tu hospedaje.</p>
+                    
+                    <div class="photo-grid">
+                        <!-- Foto 1 - Principal -->
+                        <div class="photo-upload photo-primary">
+                            <label for="foto1" class="photo-upload-label">
+                                <div class="photo-icon">📷</div>
+                                <div class="photo-text">Foto Principal</div>
+                                <div class="photo-hint">Click para seleccionar</div>
+                            </label>
+                            <input type="file" id="foto1" name="fotos[]" accept="image/jpeg,image/jpg,image/png">
+                        </div>
+
+                        <!-- Foto 2 -->
+                        <div class="photo-upload">
+                            <label for="foto2" class="photo-upload-label">
+                                <div class="photo-icon">📷</div>
+                                <div class="photo-text">Foto 2</div>
+                                <div class="photo-hint">Opcional</div>
+                            </label>
+                            <input type="file" id="foto2" name="fotos[]" accept="image/jpeg,image/jpg,image/png">
+                        </div>
+
+                        <!-- Foto 3 -->
+                        <div class="photo-upload">
+                            <label for="foto3" class="photo-upload-label">
+                                <div class="photo-icon">📷</div>
+                                <div class="photo-text">Foto 3</div>
+                                <div class="photo-hint">Opcional</div>
+                            </label>
+                            <input type="file" id="foto3" name="fotos[]" accept="image/jpeg,image/jpg,image/png">
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>ℹ️ Consejos para buenas fotos:</strong>
+                        <ul style="margin-top: 8px; margin-left: 20px; color: #92400e;">
+                            <li>Usa luz natural</li>
+                            <li>Muestra diferentes ángulos del espacio</li>
+                            <li>Formatos: JPG, PNG | Máximo: 2MB por foto</li>
+                        </ul>
+                    </div>
+                </div>
+
+                #Amenidades
                 <div class="form-section">
                     <h2>✨ Amenidades</h2>
                     <p style="color: #666; margin-bottom: 20px;">Selecciona las amenidades que ofrece tu hospedaje</p>
@@ -163,10 +235,20 @@
                             <input type="checkbox" id="estacionamiento" name="estacionamiento" value="1" {{ old('estacionamiento') ? 'checked' : '' }}>
                             <label for="estacionamiento">🚗 Estacionamiento</label>
                         </div>
+
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="aire_acondicionado" name="aire_acondicionado" value="1" {{ old('aire_acondicionado') ? 'checked' : '' }}>
+                            <label for="aire_acondicionado">❄️ Aire Acondicionado</label>
+                        </div>
+
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tv" name="tv" value="1" {{ old('tv') ? 'checked' : '' }}>
+                            <label for="tv">📺 TV</label>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Disponibilidad -->
+                #Disponibilidad
                 <div class="form-section">
                     <h2>📅 Disponibilidad</h2>
                     
@@ -179,13 +261,13 @@
                     <small style="color: #666;">Si no marcas esta opción, el hospedaje no será visible para los viajeros</small>
                 </div>
 
-                <!-- Botones de Acción -->
+                #Botones
                 <div class="form-actions">
                     <a href="{{ route('anfitrion.hospedajes.index') }}" class="btn btn-secondary">
                         Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary">
-                        Publicar Hospedaje
+                        📤 Publicar Hospedaje
                     </button>
                 </div>
             </form>
@@ -193,5 +275,20 @@
     </div>
 
     <div style="height: 50px;"></div>
+
+    <script>
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const parent = this.closest('.photo-upload');
+                    const label = parent.querySelector('.photo-upload-label');
+                    label.querySelector('.photo-hint').textContent = file.name;
+                    parent.style.borderColor = '#10b981';
+                    parent.style.background = '#d1fae5';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

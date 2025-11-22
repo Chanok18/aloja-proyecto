@@ -67,16 +67,6 @@
                                class="btn btn-primary" style="font-size: 12px; padding: 6px 12px;">
                                 ✏️ Editar
                             </a>
-                            <form action="{{ route('admin.reservas.destroy', $reserva->id_reserva) }}" 
-                                  method="POST" 
-                                  onsubmit="return confirm('¿Estás seguro de eliminar esta reserva?');"
-                                  style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger" style="font-size: 12px; padding: 6px 12px;">
-                                    🗑️ Eliminar
-                                </button>
-                            </form>
                         </div>
                     </td>
                 </tr>

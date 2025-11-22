@@ -48,6 +48,14 @@
         .review-card { background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 15px; }
         .review-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
         .stars { color: #f59e0b; font-size: 18px; }
+
+        /* Estilos para galería */
+        .gallery-main { width: 100%; height: 450px; border-radius: 12px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; }
+        .gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-thumbnails { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .gallery-thumb { height: 200px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s; }
+        .gallery-thumb:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body>
@@ -76,8 +84,36 @@
     <div class="container">
         <a href="{{ route('home') }}" class="back-btn">← Volver a la búsqueda</a>
 
-        <!-- Imagen Hero -->
-        <div class="hero-image">🏠</div>
+        <!-- Galería de Fotos -->
+        @php
+            $fotos = $hospedaje->fotos_galeria;
+        @endphp
+
+        @if($fotos->count() > 0)
+            <div style="margin-bottom: 30px;">
+                <!-- Foto Principal Grande -->
+                <div class="gallery-main" id="mainGalleryImage">
+                    <img src="{{ asset('storage/' . $fotos->first()->ruta_foto) }}" 
+                         alt="{{ $hospedaje->titulo }}" 
+                         id="mainImage">
+                </div>
+
+                <!-- Miniaturas (si hay más de 1 foto) -->
+                @if($fotos->count() > 1)
+                    <div class="gallery-thumbnails">
+                        @foreach($fotos->slice(1, 2) as $foto)
+                            <div class="gallery-thumb" onclick="cambiarImagenPrincipal(this.querySelector('img').src)">
+                                <img src="{{ asset('storage/' . $foto->ruta_foto) }}" 
+                                     alt="{{ $hospedaje->titulo }}">
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        @else
+            <!-- Placeholder si no hay fotos -->
+            <div class="hero-image">🏠</div>
+        @endif
 
         <!-- Grid Principal -->
         <div class="content-grid">
@@ -182,50 +218,50 @@
                 </div>
 
                 @auth
-        <!-- Mensajes de error -->
-        @if(session('error'))
-            <div style="background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
-                ❌ {{ session('error') }}
-            </div>
-        @endif
+                    <!-- Mensajes de error -->
+                    @if(session('error'))
+                        <div style="background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
+                            ❌ {{ session('error') }}
+                        </div>
+                    @endif
 
-        <!-- Formulario de Reserva -->
-        <form action="{{ route('reservas.store') }}" method="POST" class="booking-form">
-            @csrf
-            <input type="hidden" name="hospedaje_id" value="{{ $hospedaje->id_hospedaje }}">
-        
-            <div class="form-group">
-                <label>Fecha de entrada</label>
-                <input type="date" name="fecha_inicio" class="@error('fecha_inicio') border-red-500 @enderror" 
-                    required min="{{ date('Y-m-d') }}" value="{{ old('fecha_inicio') }}">
-                @error('fecha_inicio')
-                    <small style="color: #ef4444;">{{ $message }}</small>
-                @enderror
-            </div>
+                    <!-- Formulario de Reserva -->
+                    <form action="{{ route('reservas.store') }}" method="POST" class="booking-form">
+                        @csrf
+                        <input type="hidden" name="hospedaje_id" value="{{ $hospedaje->id_hospedaje }}">
+                    
+                        <div class="form-group">
+                            <label>Fecha de entrada</label>
+                            <input type="date" name="fecha_inicio" class="@error('fecha_inicio') border-red-500 @enderror" 
+                                required min="{{ date('Y-m-d') }}" value="{{ old('fecha_inicio') }}">
+                            @error('fecha_inicio')
+                                <small style="color: #ef4444;">{{ $message }}</small>
+                            @enderror
+                        </div>
 
-            <div class="form-group">
-                <label>Fecha de salida</label>
-                <input type="date" name="fecha_fin" class="@error('fecha_fin') border-red-500 @enderror" 
-                    required min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ old('fecha_fin') }}">
-                @error('fecha_fin')
-                    <small style="color: #ef4444;">{{ $message }}</small>
-                @enderror
-            </div>
+                        <div class="form-group">
+                            <label>Fecha de salida</label>
+                            <input type="date" name="fecha_fin" class="@error('fecha_fin') border-red-500 @enderror" 
+                                required min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ old('fecha_fin') }}">
+                            @error('fecha_fin')
+                                <small style="color: #ef4444;">{{ $message }}</small>
+                            @enderror
+                        </div>
 
-            <div class="form-group">
-                <label>Número de huéspedes</label>
-                <input type="number" name="num_huespedes" class="@error('num_huespedes') border-red-500 @enderror" 
-                    required min="1" max="{{ $hospedaje->capacidad }}" value="{{ old('num_huespedes', 1) }}">
-                <small style="color: #666; font-size: 13px;">Máximo: {{ $hospedaje->capacidad }} huéspedes</small>
-                @error('num_huespedes')
-                    <small style="color: #ef4444; display: block;">{{ $message }}</small>
-                @enderror
-            </div>
+                        <div class="form-group">
+                            <label>Número de huéspedes</label>
+                            <input type="number" name="num_huespedes" class="@error('num_huespedes') border-red-500 @enderror" 
+                                required min="1" max="{{ $hospedaje->capacidad }}" value="{{ old('num_huespedes', 1) }}">
+                            <small style="color: #666; font-size: 13px;">Máximo: {{ $hospedaje->capacidad }} huéspedes</small>
+                            @error('num_huespedes')
+                                <small style="color: #ef4444; display: block;">{{ $message }}</small>
+                            @enderror
+                        </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 16px;">
-                Reservar ahora
-            </button>
-        </form>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 16px;">
+                            Reservar ahora
+                        </button>
+                    </form>
 
                     <p style="text-align: center; margin-top: 15px; color: #666; font-size: 14px;">
                         No se te cobrará en este momento
@@ -247,5 +283,12 @@
     </div>
 
     <div style="height: 50px;"></div>
+
+    <script>
+        // Función para cambiar imagen principal
+        function cambiarImagenPrincipal(urlImagen) {
+            document.getElementById('mainImage').src = urlImagen;
+        }
+    </script>
 </body>
 </html>

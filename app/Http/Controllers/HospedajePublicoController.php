@@ -10,7 +10,7 @@ class HospedajePublicoController extends Controller
     
     public function index(Request $request)
     {
-        $query = Hospedaje::with('anfitrion')
+        $query = Hospedaje::with(['anfitrion','fotos_galeria'])
             ->where('disponible', true);
 
         // Filtro por ubicación
@@ -46,7 +46,7 @@ class HospedajePublicoController extends Controller
 
     public function show($id)
     {
-        $hospedaje = Hospedaje::with(['anfitrion', 'resenas.usuario'])
+        $hospedaje = Hospedaje::with(['anfitrion', 'resenas.usuario','fotos_galeria'])
             ->where('disponible', true)
             ->findOrFail($id);
         return view('publico.hospedajes.show', compact('hospedaje'));

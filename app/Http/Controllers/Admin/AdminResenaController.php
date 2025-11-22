@@ -106,11 +106,7 @@ class AdminResenaController extends Controller
 
     public function destroy(string $id)
     {
-        $resena = Resena::findOrFail($id);
-        $resena->delete();
-
-        return redirect()->route('admin.resenas.index')
-            ->with('success', 'Reseña eliminada exitosamente.');
+        return back()->with('error', '❌ No se pueden eliminar reservas. Son registros contables que deben conservarse. Para cancelar una reserva, edita su estado a "Cancelada".');
     }
 
 

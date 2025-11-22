@@ -167,11 +167,15 @@
         }
         .hospedaje-image {
             height: 200px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 4rem;
+            background-size: cover;
+            background-position: center;
+        }
+        .hospedaje-image-placeholder {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         .hospedaje-title {
             font-size: 1.2rem;
@@ -280,7 +284,6 @@
             </div>
             
             <div class="carousel-inner">
-                
                 <div class="carousel-item active">
                     <div class="carousel-image" style="background: linear-gradient(rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0.5)), url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200') center/cover;">
                         <div class="carousel-caption-custom">
@@ -301,7 +304,6 @@
         </div>
     </section>
 
-    
     <div class="container">
         <div class="search-card">
             <h2 class="search-title">Encuentra tu hospedaje perfecto</h2>
@@ -360,7 +362,6 @@
         </div>
     </div>
 
-    
     <section class="hospedajes-section">
         <div class="container">
             <div class="text-center mb-5">
@@ -373,7 +374,17 @@
                     @foreach($hospedajes as $hospedaje)
                         <div class="col-md-6 col-lg-4">
                             <div class="card hospedaje-card">
-                                <div class="hospedaje-image">🏠</div>
+                                @php
+                                    $fotoPrincipal = $hospedaje->fotos_galeria->where('es_principal', true)->first();
+                                @endphp
+
+                                @if($fotoPrincipal)
+                                    <div class="hospedaje-image" style="background-image: url('{{ asset('storage/' . $fotoPrincipal->ruta_foto) }}');"></div>
+                                @else
+                                    <div class="hospedaje-image hospedaje-image-placeholder">
+                                        🏠
+                                    </div>
+                                @endif
                                 
                                 <div class="card-body">
                                     <h5 class="hospedaje-title">{{ $hospedaje->titulo }}</h5>

@@ -24,7 +24,6 @@
         .status-cancelada { background: #fee2e2; color: #991b1b; }
         
         .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin: 30px 0; }
-        .info-section { }
         .info-section h3 { color: #1e3a8a; margin-bottom: 15px; font-size: 18px; }
         .info-item { padding: 12px 0; border-bottom: 1px solid #e5e7eb; }
         .info-item:last-child { border-bottom: none; }

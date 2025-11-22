@@ -10,13 +10,43 @@ use Illuminate\Http\Request;
 class AdminPagoController extends Controller
 {
     
-    public function index()
+    public function index(Request $request)
     {
-        $pagos = Pago::with('reserva.usuario', 'reserva.hospedaje')
-            ->orderBy('fecha_pago', 'desc')
-            ->paginate(10);
+        // Query base con relaciones
+        $query = Pago::with('reserva.usuario', 'reserva.hospedaje');
 
-        // Estadísticas
+        // FILTRO 1: Por Estado
+        if ($request->filled('estado_pago')) {
+            $query->where('estado_pago', $request->estado_pago);
+        }
+
+        // FILTRO 2: Por Método de Pago
+        if ($request->filled('metodo')) {
+            $query->where('metodo', $request->metodo);
+        }
+
+        // FILTRO 3: Por Rango de Fechas
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate('fecha_pago', '>=', $request->fecha_desde);
+        }
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate('fecha_pago', '<=', $request->fecha_hasta);
+        }
+
+        // FILTRO 4: Por Monto Mínimo
+        if ($request->filled('monto_min')) {
+            $query->where('monto', '>=', $request->monto_min);
+        }
+
+        // FILTRO 5: Por Monto Máximo
+        if ($request->filled('monto_max')) {
+            $query->where('monto', '<=', $request->monto_max);
+        }
+
+        // Obtener resultados con paginación
+        $pagos = $query->orderBy('fecha_pago', 'desc')->paginate(10);
+
+        // Estadísticas (pueden cambiar según filtros)
         $totalRecaudado = Pago::where('estado_pago', 'completado')->sum('monto');
         $pagosCompletados = Pago::where('estado_pago', 'completado')->count();
         $pagosPendientes = Pago::where('estado_pago', 'pendiente')->count();
@@ -91,10 +121,6 @@ class AdminPagoController extends Controller
 
     public function destroy(string $id)
     {
-        $pago = Pago::findOrFail($id);
-        $pago->delete();
-
-        return redirect()->route('admin.pagos.index')
-            ->with('success', 'Pago eliminado exitosamente.');
+        return back()->with('error', '❌ PROHIBIDO: Los pagos son registros financieros legales y NO pueden eliminarse bajo ninguna circunstancia. Para reembolsos, cambia el estado a "Reembolsado".');
     }
 }

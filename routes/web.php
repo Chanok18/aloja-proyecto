@@ -76,6 +76,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // CRUD de hospedajes
     Route::resource('hospedajes', \App\Http\Controllers\Admin\AdminHospedajeController::class);
+
+    // Gestión de fotos de hospedajes (NUEVO)
+    Route::delete('hospedajes/{hospedaje}/fotos/{foto}', [\App\Http\Controllers\Admin\AdminHospedajeController::class, 'eliminarFoto'])
+        ->name('hospedajes.fotos.eliminar');
+    Route::patch('hospedajes/{hospedaje}/fotos/{foto}/principal', [\App\Http\Controllers\Admin\AdminHospedajeController::class, 'marcarPrincipal'])
+        ->name('hospedajes.fotos.principal');
     
     // CRUD de reservas
     Route::resource('reservas', \App\Http\Controllers\Admin\AdminReservaController::class);

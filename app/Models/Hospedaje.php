@@ -15,18 +15,21 @@ class Hospedaje extends Model
         'descripcion',
         'precio',
         'capacidad',
-        'fotos',
         'disponible',
         'wifi',
         'cocina',
-        'estacionamiento'
+        'estacionamiento',
+        'aire_acondicionado',
+        'tv'
     ];
     protected $casts = [
         'precio' => 'decimal:2',
         'disponible' => 'boolean',
         'wifi' => 'boolean',
         'cocina' => 'boolean',
-        'estacionamiento' => 'boolean'
+        'estacionamiento' => 'boolean',
+        'aire_acondicionado' => 'boolean',
+        'tv' => 'boolean'
     ];
 
     public function anfitrion()
@@ -54,5 +57,24 @@ class Hospedaje extends Model
     public function totalResenas()
     {
         return $this->resenas()->count();
+    }
+    #Relacion hospedaje tiene muchas fotos
+    public function fotos_galeria()
+    {
+        return $this->hasMany(HospedajeFoto::class, 'id_hospedaje', 'id_hospedaje')
+                    ->orderBy('orden');
+    }
+
+    #Obtener foto principal
+    public function fotoPrincipal()
+    {
+        return $this->fotos_galeria()->where('es_principal', true)->first();
+    }
+
+    #URL de foto principal
+    public function urlFotoPrincipal()
+    {
+        $foto = $this->fotoPrincipal();
+        return $foto ? asset('storage/' . $foto->ruta_foto) : asset('images/hospedaje-placeholder.png');
     }
 }
