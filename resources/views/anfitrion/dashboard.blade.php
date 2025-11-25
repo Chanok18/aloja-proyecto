@@ -2,7 +2,7 @@
 
 @section('title', 'Dashboard Anfitrión')
 @section('role-name', 'Panel de Anfitrión')
-@section('page-title', 'Dashboard Anfitrión')
+@section('page-title', 'Panel de Control Anfitrión')
 
 @section('sidebar-menu')
     <a href="{{ route('anfitrion.dashboard') }}" class="active">📊 Dashboard</a>

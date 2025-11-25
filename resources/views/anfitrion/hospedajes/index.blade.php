@@ -36,7 +36,22 @@
         .hospedaje-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.3s; }
         .hospedaje-card:hover { transform: translateY(-5px); }
         
-        .hospedaje-image { width: 100%; height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 80px; }
+        /* 🔥 CAMBIO AQUÍ: Ahora muestra imagen real */
+        .hospedaje-image { 
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover;
+            display: block;
+        }
+        .hospedaje-image-placeholder {
+            width: 100%; 
+            height: 200px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 80px;
+        }
         
         .hospedaje-content { padding: 20px; }
         .hospedaje-title { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 10px; }
@@ -131,7 +146,15 @@
             <div class="hospedajes-grid">
                 @foreach($hospedajes as $hospedaje)
                     <div class="hospedaje-card">
-                        <div class="hospedaje-image">🏠</div>
+                        {{-- 🔥 CAMBIO PRINCIPAL AQUÍ: Mostrar imagen real --}}
+                        @if($hospedaje->fotoPrincipal())
+                            <img src="{{ $hospedaje->urlFotoPrincipal() }}" 
+                                 alt="{{ $hospedaje->titulo }}" 
+                                 class="hospedaje-image">
+                        @else
+                            <div class="hospedaje-image-placeholder">🏠</div>
+                        @endif
+
                         <div class="hospedaje-content">
                             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
                                 <h3 class="hospedaje-title">{{ $hospedaje->titulo }}</h3>

@@ -3,9 +3,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-
+   
 #RUTAS PuBLICAS * sin logearse *
-
 // Pagina principal con busqueda de hospedajes
 Route::get('/', [App\Http\Controllers\HospedajePublicoController::class, 'index'])->name('home');
 Route::get('/hospedajes', [App\Http\Controllers\HospedajePublicoController::class, 'index'])->name('hospedajes.publico.index');
@@ -13,7 +12,12 @@ Route::get('/hospedajes', [App\Http\Controllers\HospedajePublicoController::clas
 Route::get('/hospedajes/{id}', [App\Http\Controllers\HospedajePublicoController::class, 'show'])->name('hospedajes.publico.show');
 
 require __DIR__.'/auth.php';
-
+// RUTAS DEL CHATBOT (NUEVO)
+Route::post('/chatbot/mensaje', [App\Http\Controllers\ChatbotController::class, 'enviarMensaje'])
+    ->name('chatbot.mensaje');
+Route::get('/chatbot/historial', [App\Http\Controllers\ChatbotController::class, 'obtenerHistorial'])
+    ->name('chatbot.historial');
+ 
 
 #RUTAS DE RESERVAS *debe logearse*
 Route::middleware(['auth'])->group(function () {
@@ -56,7 +60,7 @@ Route::middleware('auth')->group(function () {
         } elseif ($user->rol === 'anfitrion') {
             return redirect()->route('anfitrion.dashboard');
         }
-        return redirect()->route('viajero.dashboard');
+        return redirect()->route('home');
     })->name('dashboard');
     
     // Rutas de perfil
@@ -101,6 +105,17 @@ Route::middleware(['auth', 'role:anfitrion'])->prefix('anfitrion')->name('anfitr
         return view('anfitrion.dashboard');
     })->name('dashboard');
     
+    // Gestión de fotos de hospedajes (NUEVO)
+    Route::delete('hospedajes/{hospedaje}/fotos/{foto}', [\App\Http\Controllers\Anfitrion\AnfitrionHospedajeController::class, 'eliminarFoto'])
+        ->name('hospedajes.fotos.eliminar');
+    Route::patch('hospedajes/{hospedaje}/fotos/{foto}/principal', [\App\Http\Controllers\Anfitrion\AnfitrionHospedajeController::class, 'marcarPrincipal'])
+        ->name('hospedajes.fotos.principal');
+
+    Route::get('/reservas', [\App\Http\Controllers\Anfitrion\AnfitrionReservaController::class, 'index'])
+        ->name('reservas.index');
+    
+    Route::get('/reservas/{id}', [\App\Http\Controllers\Anfitrion\AnfitrionReservaController::class, 'show'])
+        ->name('reservas.show');
     // CRUD de sus propios hospedajes
     Route::resource('hospedajes', \App\Http\Controllers\Anfitrion\AnfitrionHospedajeController::class);
 

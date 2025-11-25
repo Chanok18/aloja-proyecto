@@ -5,7 +5,7 @@
 @section('page-title', 'Dashboard Viajero')
 
 @section('sidebar-menu')
-    <a href="{{ route('viajero.dashboard') }}" class="active">📊 Dashboard</a>
+    <a href="{{ route('viajero.dashboard') }}" class="active">📊 Panel de Control</a>
     <a href="{{ route('home') }}">🔍 Buscar Hospedajes</a>
     <a href="{{ route('reservas.mis-reservas') }}">📅 Mis Reservas</a>
 @endsection

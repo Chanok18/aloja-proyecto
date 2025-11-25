@@ -5,7 +5,7 @@
 @section('page-title', 'Dashboard Administrador')
 
 @section('sidebar-menu')
-    <a href="{{ route('admin.dashboard') }}" class="active">📊 Dashboard</a>
+    <a href="{{ route('admin.dashboard') }}" class="active">📊 Panel de Control</a>
     <a href="{{ route('admin.hospedajes.index') }}">🏠 Hospedajes</a>
     <a href="{{ route('admin.reservas.index') }}">📅 Reservas</a>
     <a href="{{ route('admin.pagos.index') }}">💳 Pagos</a>
