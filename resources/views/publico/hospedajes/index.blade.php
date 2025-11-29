@@ -1,686 +1,485 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aloja - Encuentra tu hospedaje perfecto en Perú</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
-    <style>
-        :root {
-            --primary-blue: #1e3a8a;
-            --primary-orange: #f59e0b;
-        }
-        
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
-        }
-        
-        .navbar-custom {
-            background: var(--primary-blue);
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .navbar-brand {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: white !important;
-        }
-        
-        .navbar-brand small {
-            display: block;
-            font-size: 0.7rem;
-            font-weight: normal;
-            color: #e0e7ff;
-        }
-        
-        .nav-link {
-            color: white !important;
-            font-weight: 500;
-            margin: 0 10px;
-        }
-        
-        .btn-register {
-            background: var(--primary-orange);
-            color: white;
-            font-weight: 600;
-            border: none;
-            padding: 8px 24px;
-            border-radius: 25px;
-        }
-        
-        .btn-register:hover {
-            background: #d97706;
-            color: white;
-        }
-
-        .carousel-section {
-            margin-top: 20px;
-        }
-        .carousel-item {
-            height: 450px;
-        }
-        .carousel-image {
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-        .carousel-caption-custom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
-            padding: 60px 20px 40px 20px;
-            text-align: center;
-        }
-        .carousel-caption-custom h2 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            margin-bottom: 10px;
-        }
-
-        .carousel-caption-custom p {
-            font-size: 1.2rem;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            background-color: var(--primary-orange);
-            border-radius: 50%;
-            padding: 20px;
-        }
-        .search-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            margin-top: -60px;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .search-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--primary-blue);
-        }
-        
-        .form-control, .form-select {
-            border: 2px solid #e5e7eb;
-            padding: 12px;
-            border-radius: 8px;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 0.2rem rgba(30, 58, 138, 0.15);
-        }
-        
-        .btn-search {
-            background: var(--primary-orange);
-            color: white;
-            font-weight: 600;
-            padding: 12px 40px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-        }
-        
-        .btn-search:hover {
-            background: #d97706;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
-        }
-        
-        .hospedajes-section {
-            padding: 60px 0;
-        }
-        
-        .section-title {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary-blue);
-            margin-bottom: 10px;
-        }
-        
-        .hospedaje-card {
-            border: none;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            height: 100%;
-        }
-        .hospedaje-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        .hospedaje-image {
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            background-size: cover;
-            background-position: center;
-        }
-        .hospedaje-image-placeholder {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .hospedaje-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--primary-blue);
-            margin-bottom: 8px;
-        }
-        
-        .hospedaje-location {
-            color: #6b7280;
-            font-size: 0.95rem;
-            margin-bottom: 15px;
-        }
-        
-        .hospedaje-amenities {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .amenity-badge {
-            background: #eff6ff;
-            color: var(--primary-blue);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
-        
-        .hospedaje-price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-blue);
-        }
-        
-        .hospedaje-price small {
-            font-size: 0.9rem;
-            color: #6b7280;
-            font-weight: normal;
-        }
-        
-        .btn-detail {
-            background: var(--primary-orange);
-            color: white;
-            font-weight: 600;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            width: 100%;
-        }
-        
-        .btn-detail:hover {
-            background: #d97706;
-            color: white;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Aloja.pe - Encuentra tu hospedaje perfecto en Perú</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/aloja-design.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
+    <!-- HEADER / NAVBAR -->
+    <header class="aloja-header">
+        <nav class="aloja-navbar">
+            <a href="{{ route('home') }}" class="aloja-logo">
                 Aloja.pe
-                <small>Tu estadía, a un clic de distancia</small>
+                <span class="aloja-logo-subtitle">Tu estadía, a un clic de distancia</span>
             </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">Hospedajes</a>
-                    </li>
-                    @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard') }}">Mi Panel</a>
-                        </li>
-                        <li class="nav-item">
-                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-link nav-link">Cerrar Sesión</button>
-                            </form>
-                        </li>
+
+            <div class="aloja-nav-links">
+                <a href="{{ route('home') }}">Inicio</a>
+                <a href="{{ route('hospedajes.publico.index') }}">Hospedajes</a>
+                <a href="#">Ayuda</a>
+            </div>
+
+            <div class="aloja-nav-buttons">
+                @auth
+                    @if(auth()->user()->esAnfitrion())
+                        <a href="{{ route('anfitrion.dashboard') }}" class="btn-aloja btn-aloja-secondary">
+                            🏠 Convertirse en Anfitrión
+                        </a>
                     @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Iniciar Sesión</a>
-                        </li>
-                        <li class="nav-item ms-2">
-                            <a class="btn btn-register" href="{{ route('register') }}">Registrarse</a>
-                        </li>
-                    @endauth
-                </ul>
+                        <a href="#" class="btn-aloja btn-aloja-secondary">🏠 Convertirse en Anfitrión</a>
+                    @endif
+
+                    <a href="{{ route('dashboard') }}" class="btn-aloja btn-aloja-primary">👤 Mi Panel</a>
+                @else
+                    <a href="#" class="btn-aloja btn-aloja-secondary">🏠 Convertirse en Anfitrión</a>
+                    <a href="{{ route('login') }}" class="btn-aloja btn-aloja-secondary">🔓 Iniciar Sesión</a>
+                    <a href="{{ route('register') }}" class="btn-aloja btn-aloja-primary">⭐ Registrarse</a>
+                @endauth
             </div>
-        </div>
-    </nav>
-    <section class="carousel-section">
-        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
-            </div>
-            
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="carousel-image" style="background: linear-gradient(rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0.5)), url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=1200') center/cover;">
-                        <div class="carousel-caption-custom">
-                            <h2>Encuentra tu estadía perfecta</h2>
-                            <p>Hospedajes únicos</p>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="aloja-hero">
+        <div class="aloja-hero-content">
+            <h1>Encuentra tu estadía perfecta</h1>
+            <p class="aloja-hero-subtitle">Hospedajes seguros y confiables en todo el Perú</p>
+            <p class="aloja-hero-description">Desde las montañas de Cusco hasta las costas de Lima</p>
+
+            <!-- BUSCADOR -->
+            <div class="aloja-search-box">
+                <form action="{{ route('home') }}" method="GET">
+                    <div class="aloja-search-grid">
+                        <div class="aloja-search-field">
+                            <label class="aloja-search-label">📍 Ubicación</label>
+                            <input type="text"
+                                   name="ubicacion"
+                                   class="aloja-search-input"
+                                   placeholder="¿A dónde vas?"
+                                   value="{{ request('ubicacion') }}">
+                        </div>
+
+                        <div class="aloja-search-field">
+                            <label class="aloja-search-label">📅 fecha_Inicio</label>
+                            <input type="date"
+                                   name="check_in"
+                                   class="aloja-search-input"
+                                   value="{{ request('check_in') }}">
+                        </div>
+
+                        <div class="aloja-search-field">
+                            <label class="aloja-search-label">📅 fech-Salida</label>
+                            <input type="date"
+                                   name="check_out"
+                                   class="aloja-search-input"
+                                   value="{{ request('check_out') }}">
+                        </div>
+
+                        <div class="aloja-search-field">
+                            <label class="aloja-search-label">👥 Huéspedes</label>
+                            <select name="capacidad" class="aloja-search-select">
+                                <option value="">Seleccionar</option>
+                                <option value="1" {{ request('capacidad') == '1' ? 'selected' : '' }}>1 huésped</option>
+                                <option value="2" {{ request('capacidad') == '2' ? 'selected' : '' }}>2 huéspedes</option>
+                                <option value="3" {{ request('capacidad') == '3' ? 'selected' : '' }}>3 huéspedes</option>
+                                <option value="4" {{ request('capacidad') == '4' ? 'selected' : '' }}>4 huéspedes</option>
+                                <option value="5" {{ request('capacidad') == '5' ? 'selected' : '' }}>5+ huéspedes</option>
+                            </select>
                         </div>
                     </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-image" style="background: linear-gradient(rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0.5)), url('https://images.unsplash.com/photo-1531968455001-5c5272a41129?w=1200') center/cover;">
-                        <div class="carousel-caption-custom">
-                            <h2>Encuentra tu estadía perfecta</h2>
-                            <p>Modernidad y tradición en la capital</p>
-                        </div>
-                    </div>
-                </div>
+
+                    <button type="submit" class="aloja-search-button">🔍 Buscar</button>
+                </form>
             </div>
         </div>
     </section>
 
-    <div class="container">
-        <div class="search-card">
-            <h2 class="search-title">Encuentra tu hospedaje perfecto</h2>
-            
-            <form action="{{ route('home') }}" method="GET">
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold">Ubicación</label>
-                        <input type="text" name="ubicacion" class="form-control" 
-                               placeholder="Lima, Cusco, Arequipa..." 
-                               value="{{ request('ubicacion') }}">
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold">Precio máximo (S/.)</label>
-                        <input type="number" name="precio_max" class="form-control" 
-                               placeholder="300" 
-                               value="{{ request('precio_max') }}">
-                    </div>
-                    
-                    <div class="col-md-2">
-                        <label class="form-label fw-semibold">Capacidad</label>
-                        <input type="number" name="capacidad" class="form-control" 
-                               placeholder="2" min="1"
-                               value="{{ request('capacidad') }}">
-                    </div>
-                    
-                    <div class="col-md-4">
-                        <label class="form-label fw-semibold">Amenidades</label>
-                        <div class="d-flex gap-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="wifi" id="wifi" 
-                                       {{ request('wifi') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="wifi">WiFi</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="cocina" id="cocina"
-                                       {{ request('cocina') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="cocina">Cocina</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="estacionamiento" id="estacionamiento"
-                                       {{ request('estacionamiento') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="estacionamiento">Parking</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-search">
-                        <i class="bi bi-search me-2"></i>Buscar
-                    </button>
-                </div>
-            </form>
+    <!-- HOSPEDAJES DESTACADOS -->
+    <section class="aloja-section">
+        <div class="aloja-section-header">
+            <h2 class="aloja-section-title">Hospedajes Destacados</h2>
+            <p class="aloja-section-subtitle">
+                Descubre los alojamientos mejor valorados por nuestros huéspedes en destinos únicos del Perú
+            </p>
         </div>
-    </div>
 
-    <section class="hospedajes-section">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">{{ $hospedajes->total() }} hospedajes encontrados</h2>
-                <p class="text-muted">Descubre alojamientos únicos en los mejores destinos del Perú</p>
-            </div>
-
-            @if($hospedajes->count() > 0)
-                <div class="row g-4">
-                    @foreach($hospedajes as $hospedaje)
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card hospedaje-card">
-                                @php
-                                    $fotoPrincipal = $hospedaje->fotos_galeria->where('es_principal', true)->first();
-                                @endphp
-
-                                @if($fotoPrincipal)
-                                    <div class="hospedaje-image" style="background-image: url('{{ asset('storage/' . $fotoPrincipal->ruta_foto) }}');"></div>
+        @if($hospedajes->count() > 0)
+            <div class="aloja-hospedajes-grid">
+                @foreach($hospedajes as $hospedaje)
+                    <a href="{{ route('hospedajes.publico.show', $hospedaje->id_hospedaje) }}" style="text-decoration: none; color: inherit;">
+                        <div class="aloja-hospedaje-card">
+                            <div class="aloja-card-image-container">
+                                @if($hospedaje->fotoPrincipal())
+                                    <img src="{{ $hospedaje->urlFotoPrincipal() }}"
+                                         alt="{{ $hospedaje->titulo }}"
+                                         class="aloja-card-image">
                                 @else
-                                    <div class="hospedaje-image hospedaje-image-placeholder">
+                                    <div class="aloja-card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display:flex;align-items:center;justify-content:center;font-size:80px;">
                                         🏠
                                     </div>
                                 @endif
-                                
-                                <div class="card-body">
-                                    <h5 class="hospedaje-title">{{ $hospedaje->titulo }}</h5>
-                                    <p class="hospedaje-location">
-                                        <i class="bi bi-geo-alt-fill"></i> {{ $hospedaje->ubicacion }}
-                                    </p>
-                                    
-                                    <div class="hospedaje-amenities">
-                                        @if($hospedaje->wifi)
-                                            <span class="amenity-badge"><i class="bi bi-wifi"></i> WiFi</span>
-                                        @endif
-                                        @if($hospedaje->cocina)
-                                            <span class="amenity-badge"><i class="bi bi-egg-fried"></i> Cocina</span>
-                                        @endif
-                                        @if($hospedaje->estacionamiento)
-                                            <span class="amenity-badge"><i class="bi bi-car-front"></i> Parking</span>
-                                        @endif
+
+                                @if($hospedaje->disponible)
+                                    <span class="aloja-card-badge">✓ Verificado</span>
+                                @endif
+
+                                <div class="aloja-card-favorite">❤️</div>
+                            </div>
+
+                            <div class="aloja-card-content">
+                                <p class="aloja-card-location">📍 {{ $hospedaje->ubicacion }}</p>
+                                <h3 class="aloja-card-title">{{ $hospedaje->titulo }}</h3>
+
+                                <div class="aloja-card-footer">
+                                    <div>
+                                        <span class="aloja-card-price">S/. {{ number_format($hospedaje->precio, 0) }}</span>
+                                        <span class="aloja-card-price-label">/ noche</span>
                                     </div>
-                                    
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <div class="hospedaje-price">
-                                            S/. {{ number_format($hospedaje->precio, 0) }}
-                                            <small>/noche</small>
-                                        </div>
-                                        <div class="text-muted">
-                                            <i class="bi bi-people-fill"></i> {{ $hospedaje->capacidad }}
-                                        </div>
+
+                                    <div class="aloja-card-rating">
+                                        <span style="color: #FFC107;">⭐</span>
+                                        <span>{{ number_format($hospedaje->promedioCalificacion(), 1) }}</span>
+                                        <span style="color: #999;">({{ $hospedaje->totalResenas() }})</span>
                                     </div>
-                                    
-                                    <a href="{{ route('hospedajes.publico.show', $hospedaje->id_hospedaje) }}" 
-                                       class="btn btn-detail">
-                                        Ver detalles
-                                    </a>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-                <div class="mt-5 d-flex justify-content-center">
-                    {{ $hospedajes->links() }}
-                </div>
-            @else
-                <div class="text-center py-5">
-                    <i class="bi bi-search" style="font-size: 4rem; color: #d1d5db;"></i>
-                    <h3 class="mt-3 text-muted">No se encontraron hospedajes</h3>
+                    </a>
+                @endforeach
+            </div>
+
+            @if($hospedajes->hasPages())
+                <div class="aloja-ver-mas" style="text-align:center; margin-top:40px;">
+                    <a href="{{ $hospedajes->nextPageUrl() }}" class="btn-aloja btn-aloja-primary" style="padding:14px 40px;">Ver más</a>
                 </div>
             @endif
+        @else
+            <div style="text-align: center; padding: 80px 20px;">
+                <div style="font-size: 100px; margin-bottom: 20px;">🏠</div>
+                <h3 style="color: #666; margin-bottom: 10px;">No se encontraron hospedajes</h3>
+                <p style="color: #999;">Intenta ajustar los filtros de búsqueda</p>
+            </div>
+        @endif
+    </section>
+
+    <!-- ¿POR QUÉ ELEGIR ALOJA? -->
+    <section class="aloja-section" style="background: white;">
+        <div class="aloja-section-header">
+            <h2 class="aloja-section-title">¿Por qué elegir Aloja?</h2>
+            <p class="aloja-section-subtitle">Somos la plataforma líder en hospedajes de confianza en Perú y Latinoamérica</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div style="text-align: center; padding: 30px;">
+                <div style="width: 80px; height: 80px; background: var(--color-azul-principal); border-radius: 50%; display:flex; align-items:center; justify-content:center; font-size:36px; margin: 0 auto 20px; color: white;">🛡️</div>
+                <h3 style="font-size:22px; font-weight:700; margin-bottom:12px; color:#1A1A1A;">Seguridad</h3>
+                <p style="font-size:15px; color:#666; line-height:1.6;">Todos nuestros anfitriones son verificados y los hospedajes cumplen estrictos estándares de seguridad y limpieza.</p>
+            </div>
+
+            <div style="text-align: center; padding: 30px;">
+                <div style="width: 80px; height: 80px; background: var(--color-azul-principal); border-radius: 50%; display:flex; align-items:center; justify-content:center; font-size:36px; margin: 0 auto 20px; color: white;">🏘️</div>
+                <h3 style="font-size:22px; font-weight:700; margin-bottom:12px; color:#1A1A1A;">Variedad</h3>
+                <p style="font-size:15px; color:#666; line-height:1.6;">Desde departamentos modernos en Lima hasta cabañas tradicionales en Cusco. Encuentra el lugar perfecto para ti.</p>
+            </div>
+
+            <div style="text-align: center; padding: 30px;">
+                <div style="width: 80px; height: 80px; background: var(--color-azul-principal); border-radius: 50%; display:flex; align-items:center; justify-content:center; font-size:36px; margin: 0 auto 20px; color: white;">⚡</div>
+                <h3 style="font-size:22px; font-weight:700; margin-bottom:12px; color:#1A1A1A;">Reserva Fácil</h3>
+                <p style="font-size:15px; color:#666; line-height:1.6;">Proceso de reserva simple y seguro. Confirmación instantánea y soporte 24/7 en español para tu tranquilidad.</p>
+            </div>
         </div>
     </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </div>
 
-    <!-- CHATBOT FLOTANTE -->
+    <!-- FOOTER -->
+    <footer style="background: #0B1D3D; color: white; padding: 60px 20px 30px; margin-top: 40px;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 50px;">
+                <!-- Empresa -->
+                <div>
+                    <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Empresa</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Nosotros</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Inversionistas</a></li>
+                        <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Blog</a></li>
+                    </ul>
+                </div>
+
+                <!-- Comunidad -->
+                <div>
+                    <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Comunidad</h4>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Centro de recursos</a></li>
+                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Foro de la comunidad</a></li>
+                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Referir anfitriones</a></li>
+                        <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Eventos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Anfitriones -->
+                <div>
+                    <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Anfitriones</h4>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Alojar mi espacio</a></li>
+                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Foro de anfitriones</a></li>
+                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Hospedaje responsable</a></li>
+                        <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Conectar con un embajador</a></li>
+                    </ul>
+                </div>
+                <!-- Soporte -->
+                <div>
+                    <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Soporte</h4>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Centro de ayuda</a></li>
+                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Opciones de cancelación</a></li>
+                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Reportar problema</a></li>
+                        <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Contactar soporte</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-bottom: 30px;">
+                <h4 style="font-size:16px; font-weight:700; margin-bottom:20px; color:white;">Contacto</h4>
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <a href="tel:+5112345678" style="color:#B0B8C8; text-decoration:none; font-size:14px; display:flex; align-items:center; gap:8px;">📞 +51 1 234 5678</a>
+                    <a href="mailto:contacto@aloja.pe" style="color:#B0B8C8; text-decoration:none; font-size:14px; display:flex; align-items:center; gap:8px;">✉️ contacto@aloja.pe</a>
+                    <p style="color:#B0B8C8; font-size:14px; margin:0; display:flex; align-items:center; gap:8px;">💬 Chat en vivo disponible 24/7</p>
+                </div>
+            </div>
+
+            <!-- Redes y legal -->
+            <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:30px; display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <a href="#" style="color:#B0B8C8; text-decoration:none; font-size:12px;">Términos de servicio</a>
+                    <span style="color:#B0B8C8;">•</span>
+                    <a href="#" style="color:#B0B8C8; text-decoration:none; font-size:12px;">Política de privacidad</a>
+                    <span style="color:#B0B8C8;">•</span>
+                </div>
+
+                <div style="display:flex; gap:20px; align-items:center;">
+                    <p style="color:#B0B8C8; font-size:12px; margin:0;">Síguenos</p>
+                    <a href="#" style="color:#B0B8C8; font-size:20px; text-decoration:none;"><i class="bi bi-facebook"></i></a>
+                    <a href="#" style="color:#B0B8C8; font-size:20px; text-decoration:none;"><i class="bi bi-youtube"></i></a>
+                    <a href="#" style="color:#B0B8C8; font-size:20px; text-decoration:none;"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:30px;">
+                <p style="color:#B0B8C8; font-size:12px; margin:0;">© 2025 Aloja · Todos los derechos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- alojita-->
     <div id="chatbot-container">
-        <!-- Botón Flotante -->
         <button id="chatbot-toggle" onclick="toggleChatbot()" style="
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 60px;
-            height: 60px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #2B4F9B 0%, #3b82f6 100%);
             border: none;
-            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.4);
+            box-shadow: 0 6px 20px rgba(43, 79, 155, 0.5);
             cursor: pointer;
             z-index: 9998;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 38px;
             transition: all 0.3s;
-        " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-            💬
+        " onmouseover="this.style.transform='scale(1.15)'; this.style.boxShadow='0 8px 25px rgba(43, 79, 155, 0.6)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 20px rgba(43, 79, 155, 0.5)'">
+            🤖
         </button>
-
-        <!-- Modal del Chat -->
         <div id="chatbot-modal" style="
             display: none;
             position: fixed;
-            bottom: 100px;
+            bottom: 120px;
             right: 30px;
-            width: 380px;
-            height: 500px;
+            width: 400px;
+            height: 550px;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            box-shadow: 0 12px 50px rgba(0,0,0,0.25);
             z-index: 9999;
             flex-direction: column;
             overflow: hidden;
         ">
             <!-- Header -->
             <div style="
-                background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+                background: linear-gradient(135deg, #2B4F9B 0%, #3b82f6 100%);
                 color: white;
-                padding: 20px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                padding: 25px;
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
             ">
-                <div>
-                    <h3 style="margin: 0; font-size: 18px;">🤖 Asistente Aloja</h3>
-                    <small style="opacity: 0.9; font-size: 12px;">Con IA - Groq</small>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="font-size:32px;">🤖</div>
+                    <div>
+                        <h3 style="margin:0; font-size:19px; font-weight:700;">Alojita</h3>
+                        <small style="opacity:0.9; font-size:12px;">Asistente de Aloja</small>
+                    </div>
                 </div>
                 <button onclick="toggleChatbot()" style="
                     background: rgba(255,255,255,0.2);
                     border: none;
                     color: white;
-                    width: 30px;
-                    height: 30px;
+                    width: 35px;
+                    height: 35px;
                     border-radius: 50%;
                     cursor: pointer;
-                    font-size: 18px;
-                ">✕</button>
+                    font-size: 20px;
+                    transition: all 0.3s;
+                " onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">✕</button>
             </div>
-
-            <!-- Mensajes -->
             <div id="chatbot-messages" style="
                 flex: 1;
                 overflow-y: auto;
-                padding: 20px;
+                padding: 25px;
                 background: #f9fafb;
             ">
                 <div class="bot-message" style="
                     background: white;
-                    padding: 12px 15px;
-                    border-radius: 12px;
+                    padding: 15px 18px;
+                    border-radius: 15px;
                     margin-bottom: 15px;
-                    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-                    animation: fadeIn 0.3s;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                    border-left: 4px solid #2B4F9B;
                 ">
-                    <strong style="color: #1e3a8a; font-size: 13px;">🤖 Asistente</strong>
-                    <p style="margin: 5px 0 0 0; color: #333; line-height: 1.5; font-size: 14px;">
-                        ¡Hola! Soy el asistente virtual de Aloja. ¿En qué puedo ayudarte hoy? 😊
+                    <strong style="color: #2B4F9B; font-size: 14px; display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+                        <span style="font-size:18px;">🤖</span> Alojita 
+                    </strong>
+                    <p style="margin:0; color:#333; line-height:1.6; font-size:14px;">
+                        ¡Hola! 👋 Soy "Alojita"tu asistente virtual. Estoy aquí para ayudarte con cualquier pregunta sobre hospedajes, reservas o nuestros servicios. ¿En qué puedo ayudarte hoy? 😊
                     </p>
                 </div>
             </div>
-
-            <!-- Input -->
             <div style="
-                padding: 15px;
+                padding: 20px;
                 background: white;
                 border-top: 1px solid #e5e7eb;
             ">
-                <form id="chatbot-form" style="display: flex; gap: 10px;">
-                    <input 
-                        type="text" 
-                        id="chatbot-input" 
+                <form id="chatbot-form" style="display:flex; gap:12px;">
+                    <input
+                        type="text"
+                        id="chatbot-input"
                         placeholder="Escribe tu pregunta..."
                         required
                         style="
-                            flex: 1;
-                            padding: 12px;
-                            border: 1px solid #d1d5db;
-                            border-radius: 25px;
-                            font-size: 14px;
-                            outline: none;
+                            flex:1;
+                            padding:14px 18px;
+                            border:2px solid #d1d5db;
+                            border-radius:25px;
+                            font-size:14px;
+                            outline:none;
+                            transition:all 0.3s;
                         "
+                        onfocus="this.style.borderColor='#2B4F9B'"
+                        onblur="this.style.borderColor='#d1d5db'"
                     >
                     <button type="submit" style="
-                        background: #1e3a8a;
-                        color: white;
-                        border: none;
-                        width: 45px;
-                        height: 45px;
-                        border-radius: 50%;
-                        cursor: pointer;
-                        font-size: 18px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    " id="send-btn">
-                        ➤
-                    </button>
+                        background:#2B4F9B;
+                        color:white;
+                        border:none;
+                        width:50px;
+                        height:50px;
+                        border-radius:50%;
+                        cursor:pointer;
+                        font-size:20px;
+                        transition:all 0.3s;
+                        box-shadow:0 2px 8px rgba(43,79,155,0.3);
+                    " id="send-btn" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">➤</button>
                 </form>
-                <small style="color: #999; font-size: 11px; display: block; margin-top: 8px; text-align: center;">
-                    Powered by Groq AI
-                </small>
             </div>
         </div>
     </div>
-
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
         .user-message {
-            background: #1e3a8a;
+            background: var(--color-azul-principal);
             color: white;
-            padding: 12px 15px;
-            border-radius: 12px;
+            padding: 15px 18px;
+            border-radius: 15px;
             margin-bottom: 15px;
             margin-left: 40px;
             text-align: right;
-            animation: fadeIn 0.3s;
+            box-shadow: 0 2px 8px rgba(43,79,155,0.3);
         }
-        
-        .bot-message {
-            animation: fadeIn 0.3s;
-        }
-        
-        #chatbot-messages::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        #chatbot-messages::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        #chatbot-messages::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 3px;
-        }
-
         .typing-indicator {
-            display: flex;
-            gap: 5px;
-            padding: 10px;
+            display:flex;
+            gap:6px;
+            padding:12px;
+            justify-content:center;
         }
-        
         .typing-indicator span {
-            width: 8px;
-            height: 8px;
-            background: #1e3a8a;
-            border-radius: 50%;
+            width:10px;
+            height:10px;
+            background:var(--color-azul-principal);
+            border-radius:50%;
             animation: typing 1.4s infinite;
         }
-        
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
         @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-10px); }
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+            30% { transform: translateY(-12px); opacity: 1; }
+        }
+        #Responsive
+        @media (max-width: 992px) {
+            footer > div > div:first-child { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 576px) {
+            footer > div > div:first-child { grid-template-columns: 1fr !important; }
         }
     </style>
-
     <script>
         function toggleChatbot() {
             const modal = document.getElementById('chatbot-modal');
-            if (modal.style.display === 'none' || modal.style.display === '') {
-                modal.style.display = 'flex';
-            } else {
-                modal.style.display = 'none';
-            }
+            modal.style.display = (modal.style.display === 'flex' || modal.style.display === 'block') ? 'none' : 'flex';
         }
-
-        document.getElementById('chatbot-form').addEventListener('submit', async function(e) {
+        document.getElementById('chatbot-form').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             const input = document.getElementById('chatbot-input');
             const mensaje = input.value.trim();
-            
             if (!mensaje) return;
-            
             const messagesContainer = document.getElementById('chatbot-messages');
-            
-            // Mostrar mensaje del usuario
+
+            //mensaje del usuario
             const userMessageDiv = document.createElement('div');
             userMessageDiv.className = 'user-message';
-            userMessageDiv.innerHTML = `<p style="margin: 0; font-size: 14px;">${mensaje}</p>`;
+            userMessageDiv.innerHTML = `<p style="margin:0; font-size:14px;">${mensaje}</p>`;
             messagesContainer.appendChild(userMessageDiv);
-            
-            // Limpiar input
             input.value = '';
-            
-            // Scroll al final
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            // Mostrar indicador de escritura
             const typingDiv = document.createElement('div');
             typingDiv.id = 'typing-indicator';
             typingDiv.className = 'bot-message';
+            typingDiv.style.cssText = 'background:white; padding:15px 18px; border-radius:15px; margin-bottom:15px; box-shadow:0 2px 8px rgba(0,0,0,0.08); border-left:4px solid #2B4F9B;';
             typingDiv.innerHTML = `
-                <strong style="color: #1e3a8a; font-size: 13px;">🤖 Asistente</strong>
-                <div class="typing-indicator">
-                    <span></span><span></span><span></span>
-                </div>
+                <strong style="color:#2B4F9B; font-size:14px; display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+                    <span style="font-size:18px;">🤖</span> Asistente
+                </strong>
+                <div class="typing-indicator"><span></span><span></span><span></span></div>
             `;
             messagesContainer.appendChild(typingDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            // Deshabilitar botón
+
             const sendBtn = document.getElementById('send-btn');
             sendBtn.disabled = true;
             sendBtn.style.opacity = '0.5';
-            
             try {
-                // Enviar a la API
                 const response = await fetch('{{ route('chatbot.mensaje') }}', {
                     method: 'POST',
                     headers: {
@@ -689,53 +488,36 @@
                     },
                     body: JSON.stringify({ mensaje: mensaje })
                 });
-                
+
                 const data = await response.json();
-                
-                // Eliminar indicador de escritura
                 typingDiv.remove();
-                
-                // Mostrar respuesta del bot
                 const botMessageDiv = document.createElement('div');
                 botMessageDiv.className = 'bot-message';
-                botMessageDiv.style.background = 'white';
-                botMessageDiv.style.padding = '12px 15px';
-                botMessageDiv.style.borderRadius = '12px';
-                botMessageDiv.style.marginBottom = '15px';
-                botMessageDiv.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
+                botMessageDiv.style.cssText = 'background:white; padding:15px 18px; border-radius:15px; margin-bottom:15px; box-shadow:0 2px 8px rgba(0,0,0,0.08); border-left:4px solid #2B4F9B;';
                 botMessageDiv.innerHTML = `
-                    <strong style="color: #1e3a8a; font-size: 13px;">🤖 Asistente</strong>
-                    <p style="margin: 5px 0 0 0; color: #333; line-height: 1.5; font-size: 14px;">${data.respuesta}</p>
+                    <strong style="color:#2B4F9B; font-size:14px; display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+                        <span style="font-size:18px;">🤖</span> Asistente Aloja
+                    </strong>
+                    <p style="margin:0; color:#333; line-height:1.6; font-size:14px;">${data.respuesta}</p>
                 `;
                 messagesContainer.appendChild(botMessageDiv);
-                
             } catch (error) {
-                // Eliminar indicador de escritura
                 typingDiv.remove();
-                
-                // Mostrar error
                 const errorDiv = document.createElement('div');
                 errorDiv.className = 'bot-message';
-                errorDiv.style.background = '#fee2e2';
-                errorDiv.style.padding = '12px 15px';
-                errorDiv.style.borderRadius = '12px';
-                errorDiv.style.marginBottom = '15px';
+                errorDiv.style.cssText = 'background:#fee2e2; padding:15px 18px; border-radius:15px; margin-bottom:15px; border-left:4px solid #dc2626;';
                 errorDiv.innerHTML = `
-                    <strong style="color: #dc2626; font-size: 13px;">❌ Error</strong>
-                    <p style="margin: 5px 0 0 0; color: #991b1b; font-size: 14px;">No pude conectar con el servidor. Intenta de nuevo.</p>
+                    <strong style="color:#dc2626; font-size:14px; display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+                        <span style="font-size:18px;">❌</span> Error
+                    </strong>
+                    <p style="margin:0; color:#991b1b; font-size:14px;">No pude conectar con el servidor. Por favor intenta de nuevo.</p>
                 `;
                 messagesContainer.appendChild(errorDiv);
             }
-            
-            // Rehabilitar botón
             sendBtn.disabled = false;
             sendBtn.style.opacity = '1';
-            
-            // Scroll al final
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         });
     </script>
-</body>
-</html>
 </body>
 </html>

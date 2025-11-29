@@ -1,294 +1,289 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $hospedaje->titulo }} - Aloja</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>{{ $hospedaje->titulo }} - Aloja.pe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: #222; }
         
-        .header { background: #1e3a8a; color: white; padding: 20px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .header-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 28px; font-weight: bold; }
+        /* Navbar */
+        .navbar { background: #2B4F9B; padding: 16px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 26px; font-weight: 700; color: white; text-decoration: none; }
+        .logo .pe { color: #F5C344; }
         .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { color: white; text-decoration: none; }
-        .btn { padding: 12px 24px; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: 600; }
-        .btn-primary { background: #f59e0b; color: white; border: none; cursor: pointer; }
-        .btn-secondary { background: #6b7280; color: white; border: none; }
-        .btn-secondary:hover { background: #4b5563; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; transition: opacity 0.2s; }
+        .nav-links a:hover { opacity: 0.8; }
+        .btn-nav { padding: 10px 20px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background: #F5C344; color: #1A1A1A; }
+        .btn-primary:hover { background: #E5B334; transform: translateY(-1px); }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: white; border: 2px solid rgba(255,255,255,0.3); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
         
-        .back-btn { display: inline-block; margin: 20px 0; color: #1e3a8a; text-decoration: none; }
-        .hero-image { width: 100%; height: 400px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 120px; margin-bottom: 30px; }
+        /* Container */
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: #2B4F9B; text-decoration: none; font-weight: 600; margin: 24px 0; transition: gap 0.2s; }
+        .back-link:hover { gap: 12px; }
         
-        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 30px; }
-        .main-content { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .sidebar { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 20px; }
+        /* Header */
+        .header { margin-bottom: 24px; }
+        .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+        .header-meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 14px; }
+        .rating { display: flex; align-items: center; gap: 4px; font-weight: 600; }
+        .location { color: #717171; }
         
-        h1 { font-size: 32px; margin-bottom: 15px; color: #333; }
-        .location { color: #666; font-size: 18px; margin-bottom: 20px; }
-        .host-info { display: flex; align-items: center; gap: 15px; padding: 20px; background: #f9fafb; border-radius: 8px; margin-bottom: 30px; }
-        .host-avatar { width: 60px; height: 60px; background: #1e3a8a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; }
+        /* Gallery */
+        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-radius: 12px; overflow: hidden; margin-bottom: 48px; max-height: 400px; }
+        .gallery-main { grid-row: 1 / 3; }
+        .gallery img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: filter 0.2s; }
+        .gallery img:hover { filter: brightness(0.9); }
+        .gallery-placeholder { background: linear-gradient(135deg, #2B4F9B, #1e3a8a); display: flex; align-items: center; justify-content: center; color: white; font-size: 80px; }
         
-        .amenities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0; }
-        .amenity { display: flex; align-items: center; gap: 10px; padding: 10px; background: #f9fafb; border-radius: 5px; }
+        /* Layout */
+        .layout { display: grid; grid-template-columns: 1fr 380px; gap: 80px; margin-bottom: 48px; }
         
-        .price-box { text-align: center; padding: 20px; background: #f9fafb; border-radius: 8px; margin-bottom: 20px; }
-        .price { font-size: 36px; font-weight: bold; color: #1e3a8a; }
-        .price small { font-size: 16px; color: #666; }
+        /* Main Content */
+        .main { max-width: 100%; }
+        .section { padding: 32px 0; border-bottom: 1px solid #EBEBEB; }
+        .section:last-child { border: none; }
+        .section-title { font-size: 22px; font-weight: 600; margin-bottom: 24px; }
         
-        .booking-form { margin-top: 20px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
-        .form-group input { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; }
+        /* Host */
+        .host { display: flex; align-items: center; gap: 16px; }
+        .host-avatar { width: 56px; height: 56px; border-radius: 50%; background: #10B981; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; font-weight: 700; }
+        .host-info h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+        .host-info p { font-size: 14px; color: #717171; }
         
-        .reviews-section { margin-top: 40px; padding-top: 40px; border-top: 2px solid #e5e7eb; }
-        .review-card { background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 15px; }
-        .review-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .stars { color: #f59e0b; font-size: 18px; }
-
-        /* Estilos para galería */
-        .gallery-main { width: 100%; height: 450px; border-radius: 12px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; }
-        .gallery-main img { width: 100%; height: 100%; object-fit: cover; }
-        .gallery-thumbnails { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .gallery-thumb { height: 200px; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s; }
-        .gallery-thumb:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        /* Details */
+        .details { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .detail { display: flex; align-items: center; gap: 12px; font-size: 16px; }
+        .detail-icon { font-size: 24px; }
+        
+        /* Description */
+        .description { line-height: 1.6; color: #222; font-size: 16px; }
+        
+        /* Amenities */
+        .amenities { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .amenity { display: flex; align-items: center; gap: 12px; font-size: 16px; }
+        .available { color: #10B981; }
+        .unavailable { color: #EF4444; opacity: 0.5; }
+        
+        /* Reviews */
+        .reviews-header { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 600; margin-bottom: 32px; }
+        .review { background: #F7F7F7; padding: 24px; border-radius: 12px; margin-bottom: 16px; }
+        .review-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .review-user { font-weight: 600; font-size: 15px; }
+        .review-date { font-size: 13px; color: #717171; margin-top: 2px; }
+        .review-stars { color: #F5C344; }
+        .review-text { line-height: 1.5; color: #222; font-size: 15px; }
+        
+        /* Booking Card */
+        .booking { position: sticky; top: 100px; background: white; border: 1px solid #DDDDDD; border-radius: 12px; padding: 24px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+        .price-box { display: flex; align-items: baseline; gap: 4px; padding-bottom: 24px; border-bottom: 1px solid #EBEBEB; margin-bottom: 24px; }
+        .price { font-size: 22px; font-weight: 600; }
+        .price-period { font-size: 16px; color: #717171; }
+        .price-rating { margin-left: auto; font-size: 14px; font-weight: 600; }
+        
+        /* Form */
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 8px; }
+        .form-input { width: 100%; padding: 11px 12px; border: 1px solid #B0B0B0; border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif; }
+        .form-input:focus { outline: none; border-color: #222; box-shadow: 0 0 0 2px rgba(34,34,34,0.1); }
+        .form-hint { font-size: 12px; color: #717171; margin-top: 4px; }
+        .form-error { font-size: 12px; color: #C13515; margin-top: 4px; display: block; }
+        .btn-reserve { width: 100%; background: linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%); color: white; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-reserve:hover { transform: scale(1.02); }
+        .booking-note { text-align: center; font-size: 14px; color: #717171; margin-top: 16px; }
+        .alert { background: #FFF3CD; border: 1px solid #FFC107; color: #856404; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
+        
+        /* Login Prompt */
+        .login-box { text-align: center; }
+        .login-box p { margin-bottom: 16px; color: #717171; }
+        .btn-login { display: block; width: 100%; background: #2B4F9B; color: white; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.2s; }
+        .btn-login:hover { background: #1e3a8a; }
+        .register-link { margin-top: 12px; font-size: 14px; color: #717171; }
+        .register-link a { color: #2B4F9B; font-weight: 600; text-decoration: none; }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .layout { grid-template-columns: 1fr; gap: 40px; }
+            .booking { position: relative; top: 0; }
+            .gallery { grid-template-columns: 1fr; max-height: none; }
+            .gallery-main { grid-row: auto; }
+            .gallery img { height: 300px; }
+        }
+        
+        @media (max-width: 640px) {
+            .header h1 { font-size: 22px; }
+            .details, .amenities { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">🏠 Aloja</div>
-                <div class="nav-links">
-                    <a href="{{ route('home') }}">Buscar</a>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ route('home') }}" class="logo">Aloja<span class="pe">.pe</span></a>
+            <div class="nav-links">
+                <a href="{{ route('home') }}">Inicio</a>
+                <a href="{{ route('hospedajes.publico.index') }}">Hospedajes</a>
+                @auth
+                    <a href="{{ route('dashboard') }}" class="btn-nav btn-primary">Mi Panel</a>
+                    <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn-nav btn-secondary">Cerrar Sesión</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="btn-nav btn-secondary">Iniciar Sesión</a>
+                    <a href="{{ route('register') }}" class="btn-nav btn-primary">Registrarse</a>
+                @endauth
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <a href="{{ route('home') }}" class="back-link">← Volver a resultados</a>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>{{ $hospedaje->titulo }}</h1>
+            <div class="header-meta">
+                @if($hospedaje->resenas->count() > 0)
+                    <span class="rating">⭐ {{ number_format($hospedaje->promedioCalificacion(), 1) }} ({{ $hospedaje->totalResenas() }} reseñas)</span>
+                @endif
+                <span class="location">📍 {{ $hospedaje->ubicacion }}</span>
+            </div>
+        </div>
+        <!-- Gallery -->
+        @php $fotos = $hospedaje->fotos_galeria; @endphp
+        @if($fotos->count() > 0)
+            <div class="gallery">
+                <div class="gallery-main">
+                    <img src="{{ asset('storage/' . $fotos->first()->ruta_foto) }}" alt="{{ $hospedaje->titulo }}">
+                </div>
+                @foreach($fotos->slice(1, 3) as $foto)
+                    <div><img src="{{ asset('storage/' . $foto->ruta_foto) }}" alt="{{ $hospedaje->titulo }}"></div>
+                @endforeach
+            </div>
+        @else
+            <div class="gallery"><div class="gallery-main gallery-placeholder"></div></div>
+        @endif
+
+        <!-- Layout -->
+        <div class="layout">
+            <!-- Main Content -->
+            <div class="main">
+                <!-- Host -->
+                <div class="section">
+                    <div class="host">
+                        <div class="host-avatar">{{ strtoupper(substr($hospedaje->anfitrion->nombre, 0, 1)) }}</div>
+                        <div class="host-info">
+                            <h3>Anfitrión: {{ $hospedaje->anfitrion->nombre }} {{ $hospedaje->anfitrion->apellido }}</h3>
+                            <p>Miembro desde {{ $hospedaje->anfitrion->created_at->format('Y') }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Details -->
+                <div class="section">
+                    <h2 class="section-title">Detalles del hospedaje</h2>
+                    <div class="details">
+                        <div class="detail"><span class="detail-icon">👥</span> <strong>Capacidad</strong>: {{ $hospedaje->capacidad }} huéspedes</div>
+                        <div class="detail"><span class="detail-icon">💰</span> <strong>Precio</strong>: S/. {{ number_format($hospedaje->precio, 2) }}</div>
+                    </div>
+                </div>
+                <!-- Description -->
+                <div class="section">
+                    <h2 class="section-title">Descripción</h2>
+                    <p class="description">{{ $hospedaje->descripcion ?? 'El anfitrión no ha proporcionado una descripción detallada.' }}</p>
+                </div>
+
+                <!-- Amenities -->
+                <div class="section">
+                    <h2 class="section-title">Lo que ofrece este lugar</h2>
+                    <div class="amenities">
+                        <div class="amenity {{ $hospedaje->wifi ? 'available' : 'unavailable' }}">{{ $hospedaje->wifi ? '✅' : '❌' }} WiFi de alta velocidad</div>
+                        <div class="amenity {{ $hospedaje->cocina ? 'available' : 'unavailable' }}">{{ $hospedaje->cocina ? '✅' : '❌' }} Cocina completa</div>
+                        <div class="amenity {{ $hospedaje->estacionamiento ? 'available' : 'unavailable' }}">{{ $hospedaje->estacionamiento ? '✅' : '❌' }} Estacionamiento privado</div>
+                        <div class="amenity {{ $hospedaje->aire_acondicionado ? 'available' : 'unavailable' }}">{{ $hospedaje->aire_acondicionado ? '✅' : '❌' }} Aire acondicionado</div>
+                        <div class="amenity {{ $hospedaje->tv ? 'available' : 'unavailable' }}">{{ $hospedaje->tv ? '✅' : '❌' }} TV Smart"</div>
+                    </div>
+                </div>
+
+                <!-- Reviews -->
+                @if($hospedaje->resenas->count() > 0)
+                    <div class="section">
+                        <div class="reviews-header">⭐ {{ number_format($hospedaje->promedioCalificacion(), 1) }} · {{ $hospedaje->totalResenas() }} reseñas</div>
+                        @foreach($hospedaje->resenas->take(6) as $resena)
+                            <div class="review">
+                                <div class="review-header">
+                                    <div>
+                                        <div class="review-user">{{ $resena->usuario->nombre }} {{ $resena->usuario->apellido }}</div>
+                                        <div class="review-date">{{ $resena->fecha_resena->diffForHumans() }}</div>
+                                    </div>
+                                    <div class="review-stars">@for($i=1;$i<=5;$i++){{ $i<=$resena->calificacion?'⭐':'☆' }}@endfor</div>
+                                </div>
+                                <p class="review-text">{{ $resena->comentario }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+            <!-- Booking Card -->
+            <div>
+                <div class="booking">
+                    <div class="price-box">
+                        <span class="price">S/. {{ number_format($hospedaje->precio, 0) }}</span>
+                        <span class="price-period">/noche</span>
+                        @if($hospedaje->resenas->count() > 0)
+                            <span class="price-rating">⭐ {{ number_format($hospedaje->promedioCalificacion(), 1) }}</span>
+                        @endif
+                    </div>
                     @auth
-                        <a href="{{ route('dashboard') }}">Mi Panel</a>
-                        <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                        @if(session('error'))
+                            <div class="alert">{{ session('error') }}</div>
+                        @endif
+                        <form action="{{ route('reservas.store') }}" method="POST">
                             @csrf
-                            <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Cerrar Sesión</button>
+                            <input type="hidden" name="hospedaje_id" value="{{ $hospedaje->id_hospedaje }}">
+                        
+                            <div class="form-group">
+                                <label class="form-label">Fecha de entrada</label>
+                                <input type="date" name="fecha_inicio" class="form-input" required min="{{ date('Y-m-d') }}" value="{{ old('fecha_inicio') }}">
+                                @error('fecha_inicio')<span class="form-error">{{ $message }}</span>@enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Fecha de salida</label>
+                                <input type="date" name="fecha_fin" class="form-input" required min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ old('fecha_fin') }}">
+                                @error('fecha_fin')<span class="form-error">{{ $message }}</span>@enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Número de huéspedes</label>
+                                <input type="number" name="num_huespedes" class="form-input" required min="1" max="{{ $hospedaje->capacidad }}" value="{{ old('num_huespedes', 1) }}">
+                                <p class="form-hint">Máximo: {{ $hospedaje->capacidad }} huéspedes</p>
+                                @error('num_huespedes')<span class="form-error">{{ $message }}</span>@enderror
+                            </div>
+
+                            <button type="submit" class="btn-reserve">Reservar ahora</button>
                         </form>
+                        <p class="booking-note">No se te cobrará todavía</p>
                     @else
-                        <a href="{{ route('register') }}" class="btn btn-secondary" style="margin-right: 10px;">Regístrate</a>
-                        <a href="{{ route('login') }}" class="btn btn-primary">Iniciar Sesión</a>
+                        <div class="login-box">
+                            <p>Inicia sesión para reservar</p>
+                            <a href="{{ route('login') }}" class="btn-login">Iniciar Sesión</a>
+                            <p class="register-link">¿No tienes cuenta? <a href="{{ route('register') }}">Regístrate</a></p>
+                        </div>
                     @endauth
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="container">
-        <a href="{{ route('home') }}" class="back-btn">← Volver a la búsqueda</a>
-
-        <!-- Galería de Fotos -->
-        @php
-            $fotos = $hospedaje->fotos_galeria;
-        @endphp
-
-        @if($fotos->count() > 0)
-            <div style="margin-bottom: 30px;">
-                <!-- Foto Principal Grande -->
-                <div class="gallery-main" id="mainGalleryImage">
-                    <img src="{{ asset('storage/' . $fotos->first()->ruta_foto) }}" 
-                         alt="{{ $hospedaje->titulo }}" 
-                         id="mainImage">
-                </div>
-
-                <!-- Miniaturas (si hay más de 1 foto) -->
-                @if($fotos->count() > 1)
-                    <div class="gallery-thumbnails">
-                        @foreach($fotos->slice(1, 2) as $foto)
-                            <div class="gallery-thumb" onclick="cambiarImagenPrincipal(this.querySelector('img').src)">
-                                <img src="{{ asset('storage/' . $foto->ruta_foto) }}" 
-                                     alt="{{ $hospedaje->titulo }}">
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
-        @else
-            <!-- Placeholder si no hay fotos -->
-            <div class="hero-image">🏠</div>
-        @endif
-
-        <!-- Grid Principal -->
-        <div class="content-grid">
-            <!-- Contenido Principal -->
-            <div class="main-content">
-                <h1>{{ $hospedaje->titulo }}</h1>
-                <div class="location">📍 {{ $hospedaje->ubicacion }}</div>
-
-                <!-- Info del Anfitrión -->
-                <div class="host-info">
-                    <div class="host-avatar">{{ substr($hospedaje->anfitrion->nombre, 0, 1) }}</div>
-                    <div>
-                        <div style="font-weight: 600;">Anfitrión: {{ $hospedaje->anfitrion->nombre }} {{ $hospedaje->anfitrion->apellido }}</div>
-                        <div style="color: #666; font-size: 14px;">Miembro desde {{ $hospedaje->anfitrion->created_at->format('Y') }}</div>
-                    </div>
-                </div>
-
-                <!-- Detalles -->
-                <div style="margin-bottom: 30px;">
-                    <h2 style="margin-bottom: 15px;">Detalles del hospedaje</h2>
-                    <div style="display: flex; gap: 30px; margin-bottom: 20px;">
-                        <div>👥 <strong>Capacidad:</strong> {{ $hospedaje->capacidad }} personas</div>
-                        <div>💰 <strong>Precio:</strong> S/. {{ number_format($hospedaje->precio, 2) }} por noche</div>
-                    </div>
-                </div>
-
-                <!-- Descripción -->
-                <div style="margin-bottom: 30px;">
-                    <h2 style="margin-bottom: 15px;">Descripción</h2>
-                    <p style="line-height: 1.8; color: #666;">
-                        {{ $hospedaje->descripcion ?? 'El anfitrión no ha proporcionado una descripción detallada aún.' }}
-                    </p>
-                </div>
-
-                <!-- Amenidades -->
-                <div style="margin-bottom: 30px;">
-                    <h2 style="margin-bottom: 15px;">Amenidades</h2>
-                    <div class="amenities-grid">
-                        <div class="amenity">
-                            @if($hospedaje->wifi)
-                                <span style="color: #10b981;">✅</span> WiFi
-                            @else
-                                <span style="color: #ef4444;">❌</span> WiFi
-                            @endif
-                        </div>
-                        <div class="amenity">
-                            @if($hospedaje->cocina)
-                                <span style="color: #10b981;">✅</span> Cocina
-                            @else
-                                <span style="color: #ef4444;">❌</span> Cocina
-                            @endif
-                        </div>
-                        <div class="amenity">
-                            @if($hospedaje->estacionamiento)
-                                <span style="color: #10b981;">✅</span> Estacionamiento
-                            @else
-                                <span style="color: #ef4444;">❌</span> Estacionamiento
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Reseñas -->
-                @if($hospedaje->resenas->count() > 0)
-                    <div class="reviews-section">
-                        <h2 style="margin-bottom: 20px;">
-                            ⭐ {{ number_format($hospedaje->promedioCalificacion(), 1) }} 
-                            ({{ $hospedaje->totalResenas() }} reseñas)
-                        </h2>
-                        
-                        @foreach($hospedaje->resenas->take(5) as $resena)
-                            <div class="review-card">
-                                <div class="review-header">
-                                    <div>
-                                        <strong>{{ $resena->usuario->nombre }} {{ $resena->usuario->apellido }}</strong>
-                                        <div style="color: #666; font-size: 14px;">{{ $resena->fecha_resena->diffForHumans() }}</div>
-                                    </div>
-                                    <div class="stars">
-                                        @for($i = 1; $i <= 5; $i++)
-                                            @if($i <= $resena->calificacion)
-                                                ⭐
-                                            @else
-                                                ☆
-                                            @endif
-                                        @endfor
-                                    </div>
-                                </div>
-                                <p style="color: #666;">{{ $resena->comentario }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
-
-            <!-- Sidebar de Reserva -->
-            <div class="sidebar">
-                <div class="price-box">
-                    <div class="price">
-                        S/. {{ number_format($hospedaje->precio, 0) }}
-                        <small>/noche</small>
-                    </div>
-                </div>
-
-                @auth
-                    <!-- Mensajes de error -->
-                    @if(session('error'))
-                        <div style="background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
-                            ❌ {{ session('error') }}
-                        </div>
-                    @endif
-
-                    <!-- Formulario de Reserva -->
-                    <form action="{{ route('reservas.store') }}" method="POST" class="booking-form">
-                        @csrf
-                        <input type="hidden" name="hospedaje_id" value="{{ $hospedaje->id_hospedaje }}">
-                    
-                        <div class="form-group">
-                            <label>Fecha de entrada</label>
-                            <input type="date" name="fecha_inicio" class="@error('fecha_inicio') border-red-500 @enderror" 
-                                required min="{{ date('Y-m-d') }}" value="{{ old('fecha_inicio') }}">
-                            @error('fecha_inicio')
-                                <small style="color: #ef4444;">{{ $message }}</small>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label>Fecha de salida</label>
-                            <input type="date" name="fecha_fin" class="@error('fecha_fin') border-red-500 @enderror" 
-                                required min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ old('fecha_fin') }}">
-                            @error('fecha_fin')
-                                <small style="color: #ef4444;">{{ $message }}</small>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label>Número de huéspedes</label>
-                            <input type="number" name="num_huespedes" class="@error('num_huespedes') border-red-500 @enderror" 
-                                required min="1" max="{{ $hospedaje->capacidad }}" value="{{ old('num_huespedes', 1) }}">
-                            <small style="color: #666; font-size: 13px;">Máximo: {{ $hospedaje->capacidad }} huéspedes</small>
-                            @error('num_huespedes')
-                                <small style="color: #ef4444; display: block;">{{ $message }}</small>
-                            @enderror
-                        </div>
-
-                        <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 16px;">
-                            Reservar ahora
-                        </button>
-                    </form>
-
-                    <p style="text-align: center; margin-top: 15px; color: #666; font-size: 14px;">
-                        No se te cobrará en este momento
-                    </p>
-                @else
-                    <div style="text-align: center;">
-                        <p style="margin-bottom: 15px; color: #666;">Inicia sesión para reservar</p>
-                        <a href="{{ route('login') }}" class="btn btn-primary" style="width: 100%; text-align: center;">
-                            Iniciar Sesión
-                        </a>
-                        <p style="margin-top: 15px; font-size: 14px;">
-                            ¿No tienes cuenta? 
-                            <a href="{{ route('register') }}" style="color: #1e3a8a;">Regístrate</a>
-                        </p>
-                    </div>
-                @endauth
-            </div>
-        </div>
-    </div>
-
-    <div style="height: 50px;"></div>
-
-    <script>
-        // Función para cambiar imagen principal
-        function cambiarImagenPrincipal(urlImagen) {
-            document.getElementById('mainImage').src = urlImagen;
-        }
-    </script>
+    <div style="height:60px;"></div>
 </body>
 </html>

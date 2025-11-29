@@ -1,45 +1,84 @@
 <x-guest-layout>
+    <div class="auth-logo">
+        <h1>Aloja<span class="pe">.pe</span></h1>
+        <p>Inicia sesión en tu cuenta</p>
+    </div>
+
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    @if (session('status'))
+        <div class="alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-    <!-- Correo -->
-    <div>
-        <x-input-label for="correo" :value="__('Correo')" />
-        <x-text-input id="correo" class="block mt-1 w-full" type="email" name="correo" :value="old('correo')" required autofocus autocomplete="username" />
-        <x-input-error :messages="$errors->get('correo')" class="mt-2" />
-    </div>
+        <!-- Correo -->
+        <div class="form-group">
+            <label for="correo" class="form-label">Correo electrónico</label>
+            <div class="input-icon">
+                <span>📧</span>
+                <input 
+                    id="correo" 
+                    class="form-input" 
+                    type="email" 
+                    name="correo" 
+                    value="{{ old('correo') }}" 
+                    placeholder="tu@email.com"
+                    required 
+                    autofocus 
+                    autocomplete="username"
+                />
+            </div>
+            @error('correo')
+                <span class="form-error">{{ $message }}</span>
+            @enderror
+        </div>
 
-    <!-- Contraseña -->
-    <div class="mt-4">
-        <x-input-label for="contraseña" :value="__('Contraseña')" />
-        <x-text-input id="contraseña" class="block mt-1 w-full"
-                        type="password"
-                        name="contraseña"
-                        required autocomplete="current-password" />
-        <x-input-error :messages="$errors->get('contraseña')" class="mt-2" />
-    </div>
+        <!-- Contraseña -->
+        <div class="form-group">
+            <label for="contraseña" class="form-label">Contraseña</label>
+            <div class="input-icon">
+                <span>🔒</span>
+                <input 
+                    id="contraseña" 
+                    class="form-input" 
+                    type="password" 
+                    name="contraseña"
+                    placeholder="••••••••"
+                    required 
+                    autocomplete="current-password"
+                />
+            </div>
+            @error('contraseña')
+                <span class="form-error">{{ $message }}</span>
+            @enderror
+        </div>
 
         <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
+        <div class="checkbox-group">
+            <input id="remember_me" type="checkbox" name="remember">
+            <label for="remember_me">Recordarme</label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+        <!-- Botón de Login -->
+        <button type="submit" class="btn-primary">
+            Iniciar Sesión
+        </button>
+
+        <!-- ¿Olvidaste tu contraseña? -->
+        @if (Route::has('password.request'))
+            <div class="forgot-password">
+                <a href="{{ route('password.request') }}">
+                    ¿Olvidaste tu contraseña?
                 </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
+            </div>
+        @endif
     </form>
+
+    <!-- Link a Register -->
+    <div class="link-text">
+        ¿No tienes cuenta? <a href="{{ route('register') }}">Regístrate</a>
+    </div>
 </x-guest-layout>

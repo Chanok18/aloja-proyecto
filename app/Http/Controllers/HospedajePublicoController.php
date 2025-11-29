@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Hospedaje;
 use Illuminate\Http\Request;
 
 class HospedajePublicoController extends Controller
 {
-    
     public function index(Request $request)
     {
         $query = Hospedaje::with(['anfitrion','fotos_galeria'])
@@ -43,7 +40,6 @@ class HospedajePublicoController extends Controller
 
         return view('publico.hospedajes.index', compact('hospedajes'));
     }
-
     public function show($id)
     {
         $hospedaje = Hospedaje::with(['anfitrion', 'resenas.usuario','fotos_galeria'])
