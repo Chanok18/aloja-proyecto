@@ -78,12 +78,12 @@
                 </div>
                 
                 <div class="summary-row">
-                    <span>Check-in:</span>
+                    <span>fecha_inicio:</span>
                     <span>{{ $reserva->fecha_inicio->format('d/m/Y') }}</span>
                 </div>
                 
                 <div class="summary-row">
-                    <span>Check-out:</span>
+                    <span>fecha_fin:</span>
                     <span>{{ $reserva->fecha_fin->format('d/m/Y') }}</span>
                 </div>
                 

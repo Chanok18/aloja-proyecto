@@ -15,7 +15,6 @@
 @section('content')
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2>Lista de Hospedajes</h2>
-        <a href="{{ route('admin.hospedajes.create') }}" class="btn btn-primary">+ Nuevo Hospedaje</a>
     </div>
 
     @if(session('success'))

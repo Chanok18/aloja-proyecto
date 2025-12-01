@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function () {
             return redirect()->route('admin.dashboard');
         } elseif ($user->rol === 'anfitrion') {
             return redirect()->route('anfitrion.dashboard');
+        }elseif ($user->rol === 'viajero') {
+            return redirect()->route('viajero.dashboard');
         }
         return redirect()->route('home');
     })->name('dashboard');

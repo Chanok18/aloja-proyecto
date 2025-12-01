@@ -15,7 +15,6 @@
 @section('content')
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2>Lista de Pagos</h2>
-        <a href="{{ route('admin.pagos.create') }}" class="btn btn-primary">+ Registrar Pago</a>
     </div>
 
     @if(session('success'))
@@ -175,11 +174,10 @@
                             <a href="{{ route('admin.pagos.show', $pago->id_pago) }}" 
                                class="btn btn-primary" style="font-size: 12px; padding: 6px 12px;">
                                 👁️ Ver
-                            </a>
+                            </a> 
                             <a href="{{ route('admin.pagos.edit', $pago->id_pago) }}" 
-                               class="btn btn-primary" style="font-size: 12px; padding: 6px 12px; background: #f59e0b;">
-                                ✏️ Editar
-                            </a>
+                               class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px;">
+                                ✏️ Editar                 
                         </div>
                     </td>
                 </tr>

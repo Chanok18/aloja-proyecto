@@ -111,7 +111,7 @@
         </div>
     </div>
 
-    <!-- GRÁFICO DE RESERVAS (Placeholder) -->
+    
     <div class="content-box" style="margin-bottom: 30px;">
         <div class="section-header">
             <h3 class="section-title">📊 Reservas de los últimos 7 días</h3>

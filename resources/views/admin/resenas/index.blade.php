@@ -15,7 +15,6 @@
 @section('content')
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2>Lista de Reseñas</h2>
-        <a href="{{ route('admin.resenas.create') }}" class="btn btn-primary">+ Nueva Reseña</a>
     </div>
 
     @if(session('success'))
@@ -79,10 +78,6 @@
                             <a href="{{ route('admin.resenas.show', $resena->id_resena) }}" 
                                class="btn btn-primary" style="font-size: 12px; padding: 6px 12px;">
                                 👁️ Ver
-                            </a>
-                            <a href="{{ route('admin.resenas.edit', $resena->id_resena) }}" 
-                               class="btn btn-primary" style="font-size: 12px; padding: 6px 12px;">
-                                ✏️ Editar
                             </a>
                             <form action="{{ route('admin.resenas.destroy', $resena->id_resena) }}" 
                                   method="POST" 

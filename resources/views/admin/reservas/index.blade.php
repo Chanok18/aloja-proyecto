@@ -15,7 +15,6 @@
 @section('content')
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2>Lista de Reservas</h2>
-        <a href="{{ route('admin.reservas.create') }}" class="btn btn-primary">+ Nueva Reserva</a>
     </div>
 
     @if(session('success'))
@@ -75,7 +74,6 @@
                     <td colspan="8" style="text-align: center; padding: 40px; color: #999;">
                         No hay reservas registradas aún.
                         <br><br>
-                        <a href="{{ route('admin.reservas.create') }}" class="btn btn-primary">+ Crear primera reserva</a>
                     </td>
                 </tr>
             @endforelse

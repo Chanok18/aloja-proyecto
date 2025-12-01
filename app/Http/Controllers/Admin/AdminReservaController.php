@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -10,7 +9,7 @@ use Illuminate\Http\Request;
 
 class AdminReservaController extends Controller
 {
-
+    // ✅ VER TODAS
     public function index()
     {
         $reservas = Reserva::with(['usuario', 'hospedaje'])
@@ -20,37 +19,21 @@ class AdminReservaController extends Controller
         return view('admin.reservas.index', compact('reservas'));
     }
 
-
+    // ❌ NO CREAR - Solo viajeros pueden reservar
     public function create()
     {
-        $usuarios = Usuario::where('rol', 'viajero')
-            ->orWhere('rol', 'admin')
-            ->get();
-        
-        $hospedajes = Hospedaje::where('disponible', true)->get();
-
-        return view('admin.reservas.create', compact('usuarios', 'hospedajes'));
+        return redirect()->route('admin.reservas.index')
+            ->with('error', '❌ Los administradores NO pueden crear reservas. Solo los viajeros pueden hacer reservas.');
     }
 
-
+    // ❌ NO CREAR
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'id_usuario' => 'required|exists:usuarios,id_usuario',
-            'id_hospedaje' => 'required|exists:hospedajes,id_hospedaje',
-            'fecha_inicio' => 'required|date|after_or_equal:today',
-            'fecha_fin' => 'required|date|after:fecha_inicio',
-            'total' => 'required|numeric|min:0',
-            'estado' => 'required|in:pendiente,confirmada,cancelada,completada',
-        ]);
-
-        Reserva::create($validated);
-
         return redirect()->route('admin.reservas.index')
-            ->with('success', 'Reserva creada exitosamente.');
+            ->with('error', '❌ Los administradores NO pueden crear reservas.');
     }
 
-
+    // ✅ VER DETALLE
     public function show(string $id)
     {
         $reserva = Reserva::with(['usuario', 'hospedaje', 'pago', 'resena'])
@@ -59,46 +42,32 @@ class AdminReservaController extends Controller
         return view('admin.reservas.show', compact('reserva'));
     }
 
-
     public function edit(string $id)
     {
-        $reserva = Reserva::findOrFail($id);
-        
-        $usuarios = Usuario::where('rol', 'viajero')
-            ->orWhere('rol', 'admin')
-            ->get();
-        
-        $hospedajes = Hospedaje::where('disponible', true)->get();
+        $reserva = Reserva::with(['usuario', 'hospedaje'])->findOrFail($id);
 
-        return view('admin.reservas.edit', compact('reserva', 'usuarios', 'hospedajes'));
+        return view('admin.reservas.edit', compact('reserva'));
     }
 
-
+    // ✅ ACTUALIZAR - Solo el ESTADO
     public function update(Request $request, string $id)
     {
         $reserva = Reserva::findOrFail($id);
 
         $validated = $request->validate([
-            'id_usuario' => 'required|exists:usuarios,id_usuario',
-            'id_hospedaje' => 'required|exists:hospedajes,id_hospedaje',
-            'fecha_inicio' => 'required|date',
-            'fecha_fin' => 'required|date|after:fecha_inicio',
-            'total' => 'required|numeric|min:0',
             'estado' => 'required|in:pendiente,confirmada,cancelada,completada',
         ]);
 
         $reserva->update($validated);
 
-        return redirect()->route('admin.reservas.index')
-            ->with('success', 'Reserva actualizada exitosamente.');
-    }
-
-    public function destroy(string $id)
-    {
-        $reserva = Reserva::findOrFail($id);
-        $reserva->delete();
+        $mensajes = [
+            'pendiente' => '⏳ Reserva marcada como PENDIENTE.',
+            'confirmada' => '✅ Reserva CONFIRMADA exitosamente.',
+            'cancelada' => '❌ Reserva CANCELADA.',
+            'completada' => '🎉 Reserva marcada como COMPLETADA.',
+        ];
 
         return redirect()->route('admin.reservas.index')
-            ->with('success', 'Reserva eliminada exitosamente.');
+            ->with('success', $mensajes[$validated['estado']]);
     }
 }
