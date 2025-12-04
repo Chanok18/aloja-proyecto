@@ -333,63 +333,75 @@
     </div>
 
     <script>
-        function toggleChatbot() {
-            const modal = document.getElementById('chatbot-modal');
-            modal.style.display = (modal.style.display === 'flex' || modal.style.display === 'block') ? 'none' : 'flex';
+    function toggleChatbot() {
+        const modal = document.getElementById('chatbot-modal');
+        modal.style.display = (modal.style.display === 'flex' || modal.style.display === 'block') ? 'none' : 'flex';
+    }
+    
+    document.getElementById('chatbot-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const input = document.getElementById('chatbot-input');
+        const mensaje = input.value.trim();
+        if (!mensaje) return;
+        
+        const messagesContainer = document.getElementById('chatbot-messages');
+        
+        // Mensaje del usuario
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.className = 'user-message';
+        userMessageDiv.innerHTML = '<p style="margin:0;font-size:14px;">' + mensaje + '</p>';
+        messagesContainer.appendChild(userMessageDiv);
+        input.value = '';
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        
+        // Indicador de escritura
+        const typingDiv = document.createElement('div');
+        typingDiv.id = 'typing-indicator';
+        typingDiv.className = 'bot-message';
+        typingDiv.style.cssText = 'background:white;padding:15px 18px;border-radius:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-left:4px solid #2B4F9B;';
+        typingDiv.innerHTML = '<strong style="color:#2B4F9B;font-size:14px;display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="font-size:18px;">🤖</span> Alojita</strong><div class="typing-indicator"><span></span><span></span><span></span></div>';
+        messagesContainer.appendChild(typingDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        
+        const sendBtn = document.getElementById('send-btn');
+        sendBtn.disabled = true;
+        sendBtn.style.opacity = '0.5';
+        
+        try {
+            const response = await fetch('{{ route("chatbot.mensaje") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ mensaje: mensaje })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+            
+            const data = await response.json();
+            typingDiv.remove();
+            
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.className = 'bot-message';
+            botMessageDiv.style.cssText = 'background:white;padding:15px 18px;border-radius:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-left:4px solid #2B4F9B;';
+            botMessageDiv.innerHTML = '<strong style="color:#2B4F9B;font-size:14px;display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="font-size:18px;">🤖</span> Alojita</strong><p style="margin:0;color:#333;line-height:1.6;font-size:14px;">' + data.respuesta + '</p>';
+            messagesContainer.appendChild(botMessageDiv);
+            
+        } catch (error) {
+            typingDiv.remove();
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'bot-message';
+            errorDiv.style.cssText = 'background:#fee2e2;padding:15px 18px;border-radius:15px;margin-bottom:15px;border-left:4px solid #dc2626;';
+            errorDiv.innerHTML = '<strong style="color:#dc2626;font-size:14px;display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="font-size:18px;">❌</span> Error</strong><p style="margin:0;color:#991b1b;font-size:14px;">No pude conectar con el servidor. Por favor intenta de nuevo.</p>';
+            messagesContainer.appendChild(errorDiv);
         }
         
-        document.getElementById('chatbot-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const input = document.getElementById('chatbot-input');
-            const mensaje = input.value.trim();
-            if (!mensaje) return;
-            
-            const messagesContainer = document.getElementById('chatbot-messages');
-            const userMessageDiv = document.createElement('div');
-            userMessageDiv.className = 'user-message';
-            userMessageDiv.innerHTML = `<p style="margin:0;font-size:14px;">${mensaje}</p>`;
-            messagesContainer.appendChild(userMessageDiv);
-            input.value = '';
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            const typingDiv = document.createElement('div');
-            typingDiv.id = 'typing-indicator';
-            typingDiv.className = 'bot-message';
-            typingDiv.style.cssText = 'background:white;padding:15px 18px;border-radius:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-left:4px solid #2B4F9B;';
-            typingDiv.innerHTML = '<strong style="color:#2B4F9B;font-size:14px;display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="font-size:18px;">🤖</span> Asistente</strong><div class="typing-indicator"><span></span><span></span><span></span></div>';
-            messagesContainer.appendChild(typingDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
-            const sendBtn = document.getElementById('send-btn');
-            sendBtn.disabled = true;
-            sendBtn.style.opacity = '0.5';
-            
-            try {
-                const response = await fetch('{{ route('chatbot.mensaje') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ mensaje: mensaje })
-                });
-                
-                const data = await response.json();
-                typingDiv.remove();
-                
-                const botMessageDiv = document.createElement('div');
-                botMessageDiv.className = 'bot-message';
-                botMessageDiv.style.cssText = 'background:white;padding:15px 18px;border-radius:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-left:4px solid #2B4F9B;';
-                botMessageDiv.innerHTML = `<strong style="color:#2B4F9B;font-size:14px;display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="font-size:18px;">🤖</span> Asistente Aloja</strong><p style="margin:0;color:#333;line-height:1.6;font-size:14px;">${data.respuesta}</p>`;
-                messagesContainer.appendChild(botMessageDiv);
-            } catch (error) {
-                typingDiv.remove();
-                const errorDiv = document.createElement('div');
-                errorDiv.className = 'bot-message';
-                errorDiv.style.cssText = 'background:#fee2e2;padding:15px 18px;border-radius:15px;margin-bottom:15px;border-left:4px solid #dc2626;';
-                errorDiv.innerHTML = '<strong style="color:#dc2626;font-size:14px;display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="font-size:18px;">❌</span> Error</strong><p style="margin:0;color:#991b1b;font-size:14px;">No pude conectar con el servidor. Por favor intenta de nuevo.</p>';
-                messagesContainer.appendChild(errorDiv);
-            }
         sendBtn.disabled = false;
         sendBtn.style.opacity = '1';
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
