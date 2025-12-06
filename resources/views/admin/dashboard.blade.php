@@ -116,13 +116,6 @@
         <div class="section-header">
             <h3 class="section-title">📊 Reservas de los últimos 7 días</h3>
         </div>
-        <div style="height: 300px; display: flex; align-items: center; justify-content: center; background: #F9FAFB; border-radius: 8px; border: 2px dashed #E5E7EB;">
-            <div style="text-align: center; color: #9CA3AF;">
-                <div style="font-size: 48px; margin-bottom: 12px;">📈</div>
-                <p style="font-size: 14px; font-weight: 600;">Gráfico de reservas</p>
-                <small style="font-size: 12px;">Integración próximamente</small>
-            </div>
-        </div>
     </div>
 
     <!-- ACTIVIDAD RECIENTE -->

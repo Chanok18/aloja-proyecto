@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminHospedajeController extends Controller
 {
-    // VER TODOS
     public function index()
     {
         $hospedajes = Hospedaje::with(['anfitrion', 'fotos_galeria'])
@@ -22,7 +21,7 @@ class AdminHospedajeController extends Controller
         
         return view('admin.hospedajes.index', compact('hospedajes', 'total', 'disponibles', 'nodisponibles'));
     }
-    // ✅ VER DETALLE
+    //DETALLE
     public function show(string $id)
     {
         $hospedaje = Hospedaje::with(['anfitrion', 'reservas.usuario'])
@@ -39,12 +38,10 @@ class AdminHospedajeController extends Controller
         return view('admin.hospedajes.edit', compact('hospedaje', 'anfitriones'));
     }
 
-    // ✅ ACTUALIZAR - Solo campos de validación
+    //ACTUALIZAR
     public function update(Request $request, string $id)
     {
         $hospedaje = Hospedaje::findOrFail($id);
-
-        // VALIDAR solo los campos que el admin puede cambiar
         $validated = $request->validate([
             'disponible' => 'required|boolean',
             'titulo' => 'required|string|max:150',
@@ -54,9 +51,7 @@ class AdminHospedajeController extends Controller
             'capacidad' => 'required|integer|min:1',
         ]);
 
-        // Actualizar
         $hospedaje->update($validated);
-
         $mensaje = $validated['disponible'] 
             ? '✅ Hospedaje APROBADO y activado exitosamente.' 
             : '⚠️ Hospedaje DESACTIVADO. El anfitrión será notificado.';

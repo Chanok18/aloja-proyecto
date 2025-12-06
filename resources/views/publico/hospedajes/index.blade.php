@@ -70,11 +70,11 @@
             <div class="aloja-nav-buttons">
                 @auth
                     @if(auth()->user()->esAnfitrion())
-                        <a href="{{ route('anfitrion.dashboard') }}" class="btn-aloja btn-aloja-secondary">
+                        <a href="{{ route('register') }}" class="btn-aloja btn-aloja-secondary">
                             🏠 Convertirse en Anfitrión
                         </a>
                     @else
-                        <a href="#" class="btn-aloja btn-aloja-secondary">🏠 Convertirse en Anfitrión</a>
+                        <a href="{{ route('register') }}" class="btn-aloja btn-aloja-secondary">🏠 Convertirse en Anfitrión</a>
                     @endif
                     <a href="{{ route('dashboard') }}" class="btn-aloja btn-aloja-primary">👤 Mi Panel</a>
                 @else
@@ -103,12 +103,12 @@
                         </div>
 
                         <div class="aloja-search-field">
-                            <label class="aloja-search-label">📅 Check-in</label>
+                            <label class="aloja-search-label">📅 Fecha_inicio</label>
                             <input type="date" name="check_in" class="aloja-search-input" value="{{ request('check_in') }}">
                         </div>
 
-                        <div class="aloja-search-field">
-                            <label class="aloja-search-label">📅 Check-out</label>
+                        <div class="aloja-search-field"> 
+                            <label class="aloja-search-label">📅 Fecha_salida</label>
                             <input type="date" name="check_out" class="aloja-search-input" value="{{ request('check_out') }}">
                         </div>
 
@@ -221,84 +221,93 @@
     </section>
 
     <!-- FOOTER -->
-    <footer style="background: #0B1D3D; color: white; padding: 60px 20px 30px; margin-top: 40px;" id="footer-contacto">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 50px;">
-                <!-- Empresa -->
-                <div>
-                    <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Empresa</h4>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="margin-bottom: 12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Nosotros</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Inversionistas</a></li>
-                        <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Blog</a></li>
-                    </ul>
-                </div>
-
-                <!-- Comunidad -->
-                <div>
-                    <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Comunidad</h4>
-                    <ul style="list-style:none; padding:0; margin:0;">
-                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Centro de recursos</a></li>
-                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Foro de la comunidad</a></li>
-                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Referir anfitriones</a></li>
-                        <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Eventos</a></li>
-                    </ul>
-                </div>
-
-                <!-- Anfitriones -->
-                <div>
-                    <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Anfitriones</h4>
-                    <ul style="list-style:none; padding:0; margin:0;">
-                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Alojar mi espacio</a></li>
-                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Foro de anfitriones</a></li>
-                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Hospedaje responsable</a></li>
-                        <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Conectar con un embajador</a></li>
-                    </ul>
-                </div>
-
-                <!-- Soporte -->
-                <div>
-                    <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Soporte</h4>
-                    <ul style="list-style:none; padding:0; margin:0;">
-                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Centro de ayuda</a></li>
-                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Opciones de cancelación</a></li>
-                        <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Reportar problema</a></li>
-                        <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Contactar soporte</a></li>
-                    </ul>
-                </div>
+    
+<footer style="background: #0B1D3D; color: white; padding: 60px 20px 30px; margin-top: 40px;" id="footer-contacto">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 50px;">
+            <!-- Empresa -->
+            <div>
+                <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Empresa</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 12px;"><a href="{{ route('home') }}#nosotros" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Nosotros</a></li>
+                    <li style="margin-bottom: 12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Inversionistas</a></li>
+                    <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Blog</a></li>
+                </ul>
             </div>
 
-            <!-- Contacto -->
-            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-bottom: 30px;">
-                <h4 style="font-size:16px; font-weight:700; margin-bottom:20px; color:white;">Contacto</h4>
-                <div style="display:flex; flex-direction:column; gap:12px;">
-                    <a href="tel:+5112345678" style="color:#B0B8C8; text-decoration:none; font-size:14px; display:flex; align-items:center; gap:8px;">📞 +51 1 234 5678</a>
-                    <a href="mailto:contacto@aloja.pe" style="color:#B0B8C8; text-decoration:none; font-size:14px; display:flex; align-items:center; gap:8px;">✉️ contacto@aloja.pe</a>
-                    <p style="color:#B0B8C8; font-size:14px; margin:0; display:flex; align-items:center; gap:8px;">💬 Chat en vivo disponible 24/7</p>
-                </div>
+            <!-- Comunidad -->
+            <div>
+                <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Comunidad</h4>
+                <ul style="list-style:none; padding:0; margin:0;">
+                    <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Centro de recursos</a></li>
+                    <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Foro de la comunidad</a></li>
+                    <li style="margin-bottom:12px;"><a href="{{ route('home') }}" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Referir anfitriones</a></li>
+                    <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Eventos</a></li>
+                </ul>
             </div>
 
-            <!-- Redes y legal -->
-            <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:30px; display:flex; justify-content:space-between; align-items:center;">
-                <div style="display:flex; gap:15px; align-items:center;">
-                    <a href="#" style="color:#B0B8C8; text-decoration:none; font-size:12px;">Términos de servicio</a>
-                    <span style="color:#B0B8C8;">•</span>
-                    <a href="#" style="color:#B0B8C8; text-decoration:none; font-size:12px;">Política de privacidad</a>
-                </div>
-
-                <div style="display:flex; gap:20px; align-items:center;">
-                    <p style="color:#B0B8C8; font-size:12px; margin:0;">Síguenos</p>
-                    <a href="#" style="color:#B0B8C8; font-size:20px; text-decoration:none;"><i class="bi bi-facebook"></i></a>
-                    <a href="#" style="color:#B0B8C8; font-size:20px; text-decoration:none;"><i class="bi bi-youtube"></i></a>
-                    <a href="#" style="color:#B0B8C8; font-size:20px; text-decoration:none;"><i class="bi bi-instagram"></i></a>
-                </div>
+            <!-- Anfitriones -->
+            <div>
+                <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Anfitriones</h4>
+                <ul style="list-style:none; padding:0; margin:0;">
+                    @auth
+                        @if(auth()->user()->esAnfitrion())
+                            <li style="margin-bottom:12px;"><a href="{{ route('anfitrion.hospedajes.create') }}" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Alojar mi espacio</a></li>
+                        @else
+                            <li style="margin-bottom:12px;"><a href="{{ route('home') }}" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Alojar mi espacio</a></li>
+                        @endif
+                    @else
+                        <li style="margin-bottom:12px;"><a href="{{ route('register') }}" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Alojar mi espacio</a></li>
+                    @endauth
+                    <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Foro de anfitriones</a></li>
+                    <li style="margin-bottom:12px;"><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Hospedaje responsable</a></li>
+                    <li><a href="#" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Conectar con un embajador</a></li>
+                </ul>
             </div>
 
-            <div style="text-align:center; margin-top:30px;">
-                <p style="color:#B0B8C8; font-size:12px; margin:0;">© 2025 Aloja · Todos los derechos reservados</p>
+            <!-- Soporte -->
+            <div>
+                <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 20px; color: white;">Soporte</h4>
+                <ul style="list-style:none; padding:0; margin:0;">
+                    <li style="margin-bottom:12px;"><a href="#footer-contacto" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Centro de ayuda</a></li>
+                    <li style="margin-bottom:12px;"><a href="#footer-contacto" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Opciones de cancelación</a></li>
+                    <li style="margin-bottom:12px;"><a href="#footer-contacto" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Reportar problema</a></li>
+                    <li><a href="#footer-contacto" style="color:#B0B8C8; text-decoration:none; font-size:14px;">Contactar soporte</a></li>
+                </ul>
             </div>
         </div>
-    </footer>
+
+        <!-- Contacto -->
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-bottom: 30px;">
+            <h4 style="font-size:16px; font-weight:700; margin-bottom:20px; color:white;">Contacto</h4>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <a href="tel:+5112345678" style="color:#B0B8C8; text-decoration:none; font-size:14px; display:flex; align-items:center; gap:8px;">📞 +51 1 234 5678</a>
+                <a href="mailto:contacto@aloja.pe" style="color:#B0B8C8; text-decoration:none; font-size:14px; display:flex; align-items:center; gap:8px;">✉️ contacto@aloja.pe</a>
+                <a href="javascript:void(0);" onclick="toggleChatbot()" style="color:#B0B8C8; text-decoration:none; font-size:14px; display:flex; align-items:center; gap:8px; cursor:pointer;">💬 Chat en vivo disponible 24/7</a>
+            </div>
+        </div>
+
+        <!-- Redes y legal -->
+        <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:30px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; gap:15px; align-items:center;">
+                <a href="#" style="color:#B0B8C8; text-decoration:none; font-size:12px;">Términos de servicio</a>
+                <span style="color:#B0B8C8;">•</span>
+                <a href="#" style="color:#B0B8C8; text-decoration:none; font-size:12px;">Política de privacidad</a>
+            </div>
+
+            <div style="display:flex; gap:20px; align-items:center;">
+                <p style="color:#B0B8C8; font-size:12px; margin:0;">Síguenos</p>
+                <a href="https://facebook.com" target="_blank" style="color:#B0B8C8; font-size:20px; text-decoration:none;"><i class="bi bi-facebook"></i></a>
+                <a href="https://youtube.com" target="_blank" style="color:#B0B8C8; font-size:20px; text-decoration:none;"><i class="bi bi-youtube"></i></a>
+                <a href="https://instagram.com" target="_blank" style="color:#B0B8C8; font-size:20px; text-decoration:none;"><i class="bi bi-instagram"></i></a>
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-top:30px;">
+            <p style="color:#B0B8C8; font-size:12px; margin:0;">© 2025 Aloja · Todos los derechos reservados</p>
+        </div>
+    </div>
+</footer>
 
     <!-- Chatbot Alojita -->
     <div id="chatbot-container">

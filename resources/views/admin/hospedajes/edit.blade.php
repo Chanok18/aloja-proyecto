@@ -117,22 +117,27 @@
             <input type="hidden" name="capacidad" value="{{ $hospedaje->capacidad }}">
 
             <div style="margin-bottom: 24px;">
-                <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 16px; background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: 8px;">
-                    <input type="checkbox" 
-                           name="disponible" 
-                           value="1" 
-                           {{ $hospedaje->disponible ? 'checked' : '' }}
-                           style="width: 20px; height: 20px; cursor: pointer; accent-color: #10B981;">
-                    <div>
-                        <p style="font-size: 15px; font-weight: 600; color: #1A1A1A; margin-bottom: 4px;">
-                            ✅ Aprobar y Activar Hospedaje
-                        </p>
-                        <p style="font-size: 13px; color: #6B7280;">
-                            El hospedaje será visible para los viajeros en la plataforma
-                        </p>
-                    </div>
-                </label>
-            </div>
+    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 16px; background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: 8px;">
+        <input type="hidden" name="disponible" value="0">
+        <input type="checkbox" 
+               name="disponible" 
+               value="1" 
+               {{ $hospedaje->disponible ? 'checked' : '' }}
+               style="width: 20px; height: 20px; cursor: pointer; accent-color: #10B981;">
+        <div>
+            <p style="font-size: 15px; font-weight: 600; color: #1A1A1A; margin-bottom: 4px;">
+                ✅ Aprobar y Activar Hospedaje
+            </p>
+            <p style="font-size: 13px; color: #6B7280;">
+                @if($hospedaje->disponible)
+                    El hospedaje está <strong style="color: #10B981;">APROBADO</strong> y visible para viajeros
+                @else
+                    El hospedaje está <strong style="color: #EF4444;">RECHAZADO/DESACTIVADO</strong> y NO es visible
+                @endif
+            </p>
+        </div>
+    </label>
+</div>
 
             <!-- Info Box -->
             <div style="background: #FEF3C7; border-left: 4px solid #F59E0B; padding: 16px; border-radius: 8px; margin-bottom: 24px;">

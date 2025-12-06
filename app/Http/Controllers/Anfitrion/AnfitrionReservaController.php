@@ -8,12 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AnfitrionReservaController extends Controller
 {
-    /**
-     * Muestra todas las reservas de los hospedajes del anfitrión
-     */
     public function index()
     {
-        // Obtener todas las reservas donde el hospedaje pertenece al anfitrión
         $reservas = Reserva::with(['usuario', 'hospedaje'])
             ->whereHas('hospedaje', function($query) {
                 $query->where('id_anfitrion', Auth::id());
@@ -41,9 +37,6 @@ class AnfitrionReservaController extends Controller
         return view('anfitrion.reservas.index', compact('reservas', 'total', 'pendientes', 'confirmadas', 'ingresos'));
     }
 
-    /**
-     * Muestra el detalle de una reserva específica
-     */
     public function show($id)
     {
         // Verificar que la reserva pertenece a un hospedaje del anfitrión

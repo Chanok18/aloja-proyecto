@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Resena;
@@ -12,25 +11,24 @@ class AdminResenaController extends Controller
 {
     public function index(Request $request)
     {
-        // Query base con relaciones
         $query = Resena::with(['usuario', 'hospedaje', 'reserva']);
 
-        // FILTRO 1: Por Calificación
+        // FILTRO x Calificación
         if ($request->filled('calificacion')) {
             $query->where('calificacion', $request->calificacion);
         }
 
-        // FILTRO 2: Por Usuario
+        // x Usuario
         if ($request->filled('usuario_id')) {
             $query->where('id_usuario', $request->usuario_id);
         }
 
-        // FILTRO 3: Por Hospedaje
+        // x Hospedaje
         if ($request->filled('hospedaje_id')) {
             $query->where('id_hospedaje', $request->hospedaje_id);
         }
 
-        // FILTRO 4: Por Rango de Fechas
+        // Fechas
         if ($request->filled('fecha_desde')) {
             $query->whereDate('fecha_resena', '>=', $request->fecha_desde);
         }
@@ -38,10 +36,7 @@ class AdminResenaController extends Controller
             $query->whereDate('fecha_resena', '<=', $request->fecha_hasta);
         }
 
-        // Obtener resultados con paginación
         $resenas = $query->orderBy('fecha_resena', 'desc')->paginate(10);
-
-        // Estadísticas
         $totalResenas = Resena::count();
         $resenasPositivas = Resena::where('calificacion', '>=', 4)->count();
         $promedioCalificacion = Resena::avg('calificacion');

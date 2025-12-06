@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class AdminReservaController extends Controller
 {
-    // ✅ VER TODAS
     public function index()
     {
         $reservas = Reserva::with(['usuario', 'hospedaje'])
@@ -19,21 +18,18 @@ class AdminReservaController extends Controller
         return view('admin.reservas.index', compact('reservas'));
     }
 
-    // ❌ NO CREAR - Solo viajeros pueden reservar
     public function create()
     {
         return redirect()->route('admin.reservas.index')
             ->with('error', '❌ Los administradores NO pueden crear reservas. Solo los viajeros pueden hacer reservas.');
     }
 
-    // ❌ NO CREAR
     public function store(Request $request)
     {
         return redirect()->route('admin.reservas.index')
             ->with('error', '❌ Los administradores NO pueden crear reservas.');
     }
 
-    // ✅ VER DETALLE
     public function show(string $id)
     {
         $reserva = Reserva::with(['usuario', 'hospedaje', 'pago', 'resena'])
@@ -49,7 +45,6 @@ class AdminReservaController extends Controller
         return view('admin.reservas.edit', compact('reserva'));
     }
 
-    // ✅ ACTUALIZAR - Solo el ESTADO
     public function update(Request $request, string $id)
     {
         $reserva = Reserva::findOrFail($id);
